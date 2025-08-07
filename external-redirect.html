@@ -29,6 +29,7 @@
             font-size: 80px;
             margin-bottom: 20px;
             display: block;
+            animation: bounce 2s infinite;
         }
         h1 {
             font-size: 2.5em;
@@ -52,8 +53,12 @@
             opacity: 0.8;
             margin-top: 20px;
         }
-        .celebration {
-            animation: bounce 2s infinite;
+        .breakout-status {
+            background: rgba(255, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff4444;
         }
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
@@ -70,21 +75,26 @@
 </head>
 <body>
     <div class="container">
-        <div class="success-icon celebration">🚀</div>
+        <div class="success-icon">🚀</div>
         <h1>EXTERNAL REDIRECT SUCCESS!</h1>
         <div class="subtitle">Banner Auto-Redirect Worked!</div>
         
         <div class="info">
             <strong>✅ Achievement Unlocked:</strong><br>
-            Successfully redirected from Vungle banner to external browser!
+            Successfully redirected from Vungle banner to external content!
         </div>
         
         <div class="info">
             <strong>🎯 Test Results:</strong><br>
             • Banner loaded correctly<br>
             • Timing sequence executed<br>
-            • External browser launched<br>
-            • Auto-redirect reproduced!
+            • External content loaded<br>
+            • Now attempting browser breakout...
+        </div>
+        
+        <div class="breakout-status" id="breakout-status">
+            <strong>🌐 Browser Breakout Status:</strong><br>
+            <span id="status-text">Initializing breakout attempts...</span>
         </div>
         
         <div class="timestamp" id="timestamp"></div>
@@ -93,18 +103,110 @@
     <script>
         // Display current timestamp
         document.getElementById('timestamp').textContent = 
-            'Redirected at: ' + new Date().toLocaleString();
+            'Loaded at: ' + new Date().toLocaleString();
         
         // Log success for debugging
-        console.log('[EXTERNAL-REDIRECT] SUCCESS! Auto-redirect from banner worked!');
+        console.log('[EXTERNAL-REDIRECT] SUCCESS! External content loaded in banner!');
         console.log('[EXTERNAL-REDIRECT] Timestamp: ' + new Date().toISOString());
         console.log('[EXTERNAL-REDIRECT] User Agent: ' + navigator.userAgent);
         console.log('[EXTERNAL-REDIRECT] Referrer: ' + document.referrer);
         
-        // Optional: Auto-redirect to a specific site after showing success
-        // setTimeout(() => {
-        //     window.location.href = 'https://www.google.com';
-        // }, 5000);
+        // BROWSER BREAKOUT ATTEMPTS
+        console.log('[EXTERNAL-REDIRECT] STARTING BROWSER BREAKOUT ATTEMPTS');
+        
+        const statusDiv = document.getElementById('status-text');
+        let attemptCount = 0;
+        
+        function updateStatus(message) {
+            statusDiv.innerHTML = message;
+            console.log('[EXTERNAL-REDIRECT] ' + message);
+        }
+        
+        // Wait 2 seconds, then start breakout attempts
+        setTimeout(() => {
+            updateStatus('🚀 Starting browser breakout attempts...');
+            
+            // Method 1: Try to break out with window.open
+            setTimeout(() => {
+                attemptCount++;
+                updateStatus(`Attempt ${attemptCount}: Window.open to Google...`);
+                try {
+                    const externalWindow = window.open('https://www.google.com', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+                    if (externalWindow) {
+                        updateStatus('✅ BREAKTHROUGH! External window opened!');
+                        console.log('[EXTERNAL-REDIRECT] ✅ EXTERNAL WINDOW OPENED TO GOOGLE');
+                    } else {
+                        updateStatus('❌ Window.open blocked, trying next method...');
+                        console.log('[EXTERNAL-REDIRECT] ❌ WINDOW.OPEN BLOCKED');
+                    }
+                } catch(e) {
+                    updateStatus('❌ Window.open error: ' + e.message);
+                    console.log('[EXTERNAL-REDIRECT] ❌ WINDOW.OPEN ERROR: ' + e.message);
+                }
+            }, 2000);
+            
+            // Method 2: Try top-level navigation
+            setTimeout(() => {
+                attemptCount++;
+                updateStatus(`Attempt ${attemptCount}: Top-level navigation...`);
+                try {
+                    if (window.top && window.top !== window) {
+                        window.top.location.href = 'https://www.google.com';
+                        updateStatus('✅ BREAKTHROUGH! Top navigation fired!');
+                        console.log('[EXTERNAL-REDIRECT] ✅ TOP NAVIGATION FIRED');
+                    } else {
+                        window.location.href = 'https://www.google.com';
+                        updateStatus('✅ BREAKTHROUGH! Direct navigation fired!');
+                        console.log('[EXTERNAL-REDIRECT] ✅ DIRECT NAVIGATION FIRED');
+                    }
+                } catch(e) {
+                    updateStatus('❌ Navigation error: ' + e.message);
+                    console.log('[EXTERNAL-REDIRECT] ❌ NAVIGATION ERROR: ' + e.message);
+                }
+            }, 4000);
+            
+            // Method 3: Try parent targeting
+            setTimeout(() => {
+                attemptCount++;
+                updateStatus(`Attempt ${attemptCount}: Parent window targeting...`);
+                try {
+                    if (window.parent && window.parent !== window) {
+                        window.parent.location.href = 'https://www.google.com';
+                        updateStatus('✅ BREAKTHROUGH! Parent navigation fired!');
+                        console.log('[EXTERNAL-REDIRECT] ✅ PARENT NAVIGATION FIRED');
+                    }
+                } catch(e) {
+                    updateStatus('❌ Parent error: ' + e.message);
+                    console.log('[EXTERNAL-REDIRECT] ❌ PARENT ERROR: ' + e.message);
+                }
+            }, 6000);
+            
+            // Method 4: Try form submission
+            setTimeout(() => {
+                attemptCount++;
+                updateStatus(`Attempt ${attemptCount}: Form submission to new window...`);
+                try {
+                    const form = document.createElement('form');
+                    form.method = 'GET';
+                    form.action = 'https://www.google.com';
+                    form.target = '_blank';
+                    form.style.display = 'none';
+                    document.body.appendChild(form);
+                    form.submit();
+                    updateStatus('✅ BREAKTHROUGH! Form submitted to new window!');
+                    console.log('[EXTERNAL-REDIRECT] ✅ FORM SUBMISSION FIRED');
+                } catch(e) {
+                    updateStatus('❌ Form error: ' + e.message);
+                    console.log('[EXTERNAL-REDIRECT] ❌ FORM ERROR: ' + e.message);
+                }
+            }, 8000);
+            
+            // Final status
+            setTimeout(() => {
+                updateStatus(`Completed ${attemptCount} breakout attempts. Check console for results.`);
+            }, 10000);
+            
+        }, 2000);
     </script>
 </body>
 </html>

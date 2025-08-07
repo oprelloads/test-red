@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHROME DIRECT v141</title>
+    <title>IN-APP BROWSER v142</title>
     
-    <!-- SINGLE DIRECT CHROME INTENT -->
-    <meta http-equiv="refresh" content="0;url=intent://www.google.com#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://www.google.com;end">
+    <!-- TRY CHROME CUSTOM TABS INSTEAD OF WEBVIEW -->
+    <meta http-equiv="refresh" content="0;url=googlechrome://navigate?url=https://www.google.com">
     
     <style>
         body {
             font-family: monospace;
-            background: linear-gradient(45deg, #2ECC71, #27AE60);
+            background: linear-gradient(45deg, #3498DB, #2980B9);
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -31,7 +31,7 @@
             border-radius: 20px;
             font-size: 14px;
             font-weight: bold;
-            border: 2px solid #2ECC71;
+            border: 2px solid #3498DB;
         }
         h1 {
             font-size: 2.5em;
@@ -44,97 +44,207 @@
             border-radius: 15px;
             margin: 20px;
             font-size: 1.1em;
-            border: 2px solid #2ECC71;
+            border: 2px solid #3498DB;
             max-width: 400px;
         }
-        .countdown {
-            font-size: 2em;
+        .manual-link {
+            background: #E74C3C;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
             font-weight: bold;
-            color: #F1C40F;
-            margin: 15px;
+            font-size: 1.2em;
+            margin: 10px;
+            display: inline-block;
+            border: 2px solid #C0392B;
+        }
+        .manual-link:hover {
+            background: #C0392B;
         }
     </style>
 </head>
 <body>
-    <div class="version">🎯 v141 DIRECT</div>
+    <div class="version">🌐 v142 BROWSER</div>
     
-    <h1>🎯 CHROME DIRECT</h1>
-    
-    <div class="countdown" id="countdown">LAUNCHING...</div>
+    <h1>🌐 IN-APP BROWSER</h1>
     
     <div class="status">
-        <div style="color: #F1C40F; font-weight: bold;">🎯 SINGLE CHROME INTENT</div>
-        <div style="color: #F39C12;">📱 Direct package targeting</div>
-        <div style="color: #F39C12;">🔗 Browser fallback URL</div>
-        <div style="color: #F39C12;">⚡ Clean, focused approach</div>
+        <div style="color: #F1C40F; font-weight: bold;">🎯 WEBVIEW BREAKOUT TECHNIQUES</div>
+        <div style="color: #F39C12;">📱 Chrome Custom Tabs</div>
+        <div style="color: #F39C12;">🌐 In-app browser simulation</div>
+        <div style="color: #F39C12;">🔗 Manual fallback options</div>
     </div>
 
+    <!-- MANUAL FALLBACK LINKS -->
+    <a href="intent://www.google.com#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://www.google.com;end" class="manual-link">
+        🚀 Launch Chrome
+    </a>
+    
+    <a href="https://www.google.com" class="manual-link" target="_blank">
+        🌐 Open Google (New Tab)
+    </a>
+    
+    <a href="https://www.google.com" class="manual-link" target="_top">
+        🔝 Open Google (Top Frame)
+    </a>
+    
+    <a href="market://details?id=com.android.chrome" class="manual-link">
+        🏪 Play Store - Chrome
+    </a>
+
     <script>
-        console.log('[VUNGLE-CLICK] 🎯 CHROME DIRECT v141 LOADED!');
-        console.log('[VUNGLE-CLICK] 🚀 SINGLE DIRECT CHROME INTENT!');
-        console.log('[VUNGLE-CLICK] ⚡ Meta refresh should launch Chrome directly...');
+        console.log('[VUNGLE-CLICK] 🌐 IN-APP BROWSER v142 LOADED!');
+        console.log('[VUNGLE-CLICK] 🎯 WEBVIEW BREAKOUT ANALYSIS!');
+        console.log('[VUNGLE-CLICK] ⚡ Testing desktop vs mobile differences...');
         
-        // Simple monitoring
-        let launchAttempt = 0;
+        // Detect environment
+        const userAgent = navigator.userAgent;
+        const isAndroid = /Android/i.test(userAgent);
+        const isChrome = /Chrome/i.test(userAgent);
+        const isWebView = /wv/i.test(userAgent);
         
-        // Check if we're still here after expected redirect
+        console.log('[VUNGLE-CLICK] 📱 Environment Analysis:');
+        console.log('[VUNGLE-CLICK] - User Agent: ' + userAgent);
+        console.log('[VUNGLE-CLICK] - Is Android: ' + isAndroid);
+        console.log('[VUNGLE-CLICK] - Is Chrome: ' + isChrome);
+        console.log('[VUNGLE-CLICK] - Is WebView: ' + isWebView);
+        
+        // Check available APIs
+        console.log('[VUNGLE-CLICK] 🔧 Available APIs:');
+        console.log('[VUNGLE-CLICK] - window.open: ' + (typeof window.open !== 'undefined'));
+        console.log('[VUNGLE-CLICK] - window.location: ' + (typeof window.location !== 'undefined'));
+        console.log('[VUNGLE-CLICK] - window.parent: ' + (window.parent !== window));
+        console.log('[VUNGLE-CLICK] - window.top: ' + (window.top !== window));
+        
+        // Try different breakout methods
+        let attemptCount = 0;
+        
         setTimeout(() => {
-            launchAttempt++;
-            console.log('[VUNGLE-CLICK] ⚠️ STILL IN WEBVIEW #' + launchAttempt + ' - Meta refresh may be blocked');
-            console.log('[VUNGLE-CLICK] 🎯 Trying JavaScript Chrome intent...');
+            attemptCount++;
+            console.log('[VUNGLE-CLICK] 🎯 ATTEMPT #' + attemptCount + ' - Chrome Custom Tabs');
             
             try {
-                window.location.href = 'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://www.google.com;end';
-                console.log('[VUNGLE-CLICK] 📱 JavaScript Chrome intent executed');
+                // Try Chrome Custom Tabs approach
+                window.location.href = 'googlechrome://navigate?url=https://www.google.com';
+                console.log('[VUNGLE-CLICK] 📱 Chrome Custom Tabs executed');
             } catch (e) {
-                console.log('[VUNGLE-CLICK] ❌ Chrome intent blocked: ' + e.message);
+                console.log('[VUNGLE-CLICK] ❌ Chrome Custom Tabs blocked: ' + e.message);
             }
         }, 1000);
         
         setTimeout(() => {
-            launchAttempt++;
-            console.log('[VUNGLE-CLICK] ⚠️ STILL IN WEBVIEW #' + launchAttempt + ' - Trying fallback URL');
+            attemptCount++;
+            console.log('[VUNGLE-CLICK] 🎯 ATTEMPT #' + attemptCount + ' - Window.open with specific features');
             
             try {
-                window.location.href = 'https://www.google.com';
-                console.log('[VUNGLE-CLICK] 🌐 Fallback URL executed');
+                // Try window.open with specific features to trigger external browser
+                const popup = window.open('https://www.google.com', '_blank', 'location=yes,scrollbars=yes,status=yes');
+                console.log('[VUNGLE-CLICK] 🪟 Window.open with features executed, result: ' + popup);
             } catch (e) {
-                console.log('[VUNGLE-CLICK] ❌ Fallback URL blocked: ' + e.message);
+                console.log('[VUNGLE-CLICK] ❌ Window.open with features blocked: ' + e.message);
             }
         }, 2000);
         
         setTimeout(() => {
-            launchAttempt++;
-            console.log('[VUNGLE-CLICK] ⚠️ STILL IN WEBVIEW #' + launchAttempt + ' - WebView containment confirmed');
-            console.log('[VUNGLE-CLICK] 🔒 All navigation attempts are being contained within WebView');
-            console.log('[VUNGLE-CLICK] 💡 This suggests strong WebView security policies are in place');
+            attemptCount++;
+            console.log('[VUNGLE-CLICK] 🎯 ATTEMPT #' + attemptCount + ' - Parent frame navigation');
+            
+            try {
+                // Try to navigate parent frame
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = 'https://www.google.com';
+                    console.log('[VUNGLE-CLICK] 👪 Parent frame navigation executed');
+                } else {
+                    console.log('[VUNGLE-CLICK] 👪 No parent frame available');
+                }
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Parent frame navigation blocked: ' + e.message);
+            }
         }, 3000);
+        
+        setTimeout(() => {
+            attemptCount++;
+            console.log('[VUNGLE-CLICK] 🎯 ATTEMPT #' + attemptCount + ' - Top frame navigation');
+            
+            try {
+                // Try to navigate top frame
+                if (window.top && window.top !== window) {
+                    window.top.location.href = 'https://www.google.com';
+                    console.log('[VUNGLE-CLICK] 🔝 Top frame navigation executed');
+                } else {
+                    console.log('[VUNGLE-CLICK] 🔝 No top frame available');
+                }
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Top frame navigation blocked: ' + e.message);
+            }
+        }, 4000);
+        
+        setTimeout(() => {
+            attemptCount++;
+            console.log('[VUNGLE-CLICK] 🎯 ATTEMPT #' + attemptCount + ' - Document domain manipulation');
+            
+            try {
+                // Try document domain manipulation
+                console.log('[VUNGLE-CLICK] 🌐 Current domain: ' + document.domain);
+                document.domain = 'google.com';
+                window.location.href = 'https://www.google.com';
+                console.log('[VUNGLE-CLICK] 🌐 Domain manipulation executed');
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Domain manipulation blocked: ' + e.message);
+            }
+        }, 5000);
+        
+        setTimeout(() => {
+            attemptCount++;
+            console.log('[VUNGLE-CLICK] 🎯 ATTEMPT #' + attemptCount + ' - Form submission to external');
+            
+            try {
+                // Create a form that submits to external site
+                const form = document.createElement('form');
+                form.method = 'GET';
+                form.action = 'https://www.google.com';
+                form.target = '_blank';
+                document.body.appendChild(form);
+                form.submit();
+                console.log('[VUNGLE-CLICK] 📝 External form submission executed');
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ External form submission blocked: ' + e.message);
+            }
+        }, 6000);
+        
+        setTimeout(() => {
+            console.log('[VUNGLE-CLICK] 📊 BREAKOUT ANALYSIS COMPLETE');
+            console.log('[VUNGLE-CLICK] 🔍 All automated attempts finished');
+            console.log('[VUNGLE-CLICK] 👆 Manual links available for user interaction');
+            console.log('[VUNGLE-CLICK] 💡 Key insight: WebView vs Desktop browser differences confirmed');
+        }, 7000);
         
         // Navigation event monitoring
         window.addEventListener('beforeunload', () => {
-            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - NAVIGATION DETECTED!');
+            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - BREAKOUT ATTEMPT!');
         });
         
         window.addEventListener('pagehide', () => {
-            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - POSSIBLE EXTERNAL LAUNCH!');
+            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - POSSIBLE BREAKOUT SUCCESS!');
         });
         
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE - APP SWITCH OR HIDE!');
+                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE - APP SWITCH DETECTED!');
             }
         });
         
-        console.log('[VUNGLE-CLICK] 🎯 CHROME DIRECT SYSTEM READY!');
-        console.log('[VUNGLE-CLICK] 📋 Chrome should launch in 0 seconds...');
+        // User interaction on manual links
+        document.querySelectorAll('.manual-link').forEach((link, index) => {
+            link.addEventListener('click', () => {
+                console.log('[VUNGLE-CLICK] 👆 USER CLICKED MANUAL LINK #' + (index + 1) + ': ' + link.href);
+                console.log('[VUNGLE-CLICK] 🎯 Target: ' + link.target);
+            });
+        });
+        
+        console.log('[VUNGLE-CLICK] 🌐 IN-APP BROWSER SYSTEM READY!');
+        console.log('[VUNGLE-CLICK] 📋 Multiple breakout vectors prepared!');
     </script>
-    
-    <!-- FALLBACK LINK -->
-    <noscript>
-        <div style="text-align: center; margin-top: 50px;">
-            <p>If Chrome doesn't launch automatically:</p>
-            <a href="intent://www.google.com#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://www.google.com;end" style="color: #F1C40F; font-size: 1.2em;">Launch Chrome</a>
-        </div>
-    </noscript>
 </body>
 </html>

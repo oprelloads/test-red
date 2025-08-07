@@ -3,11 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DATA URI EXPLOIT v137</title>
+    <title>HTTP REDIRECT v138</title>
+    
+    <!-- IMMEDIATE META REFRESH - NO JAVASCRIPT -->
+    <meta http-equiv="refresh" content="0;url=https://www.google.com">
+    
+    <!-- BACKUP REFRESH WITH DELAY -->
+    <meta http-equiv="refresh" content="1;url=https://www.youtube.com">
+    
+    <!-- HTTP HEADERS SIMULATION -->
+    <meta http-equiv="Location" content="https://www.amazon.com">
+    <meta http-equiv="Refresh" content="2;url=https://www.facebook.com">
+    
     <style>
         body {
             font-family: monospace;
-            background: linear-gradient(45deg, #2E8B57, #228B22);
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -27,217 +38,104 @@
             border-radius: 20px;
             font-size: 14px;
             font-weight: bold;
-            border: 2px solid #2E8B57;
+            border: 2px solid #FF6B35;
         }
         h1 {
             font-size: 2.5em;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
-        .exploit-status {
+        .redirect-status {
             background: rgba(0,0,0,0.7);
             padding: 20px;
             border-radius: 15px;
             margin: 20px;
             font-size: 1.1em;
-            border: 2px solid #2E8B57;
+            border: 2px solid #FF6B35;
             max-width: 400px;
         }
         .countdown {
             font-size: 2em;
             font-weight: bold;
-            color: #32CD32;
+            color: #FFE66D;
             margin: 15px;
         }
     </style>
 </head>
 <body>
-    <div class="version">📊 v137 DATA-URI</div>
+    <div class="version">🌐 v138 HTTP</div>
     
-    <h1>📊 DATA URI EXPLOIT</h1>
+    <h1>🌐 HTTP REDIRECT</h1>
     
-    <div class="countdown" id="countdown">3</div>
+    <div class="countdown" id="countdown">REDIRECTING...</div>
     
-    <div class="exploit-status">
-        <div style="color: #32CD32; font-weight: bold;">🎯 DATA URI + BLOB URL BYPASS</div>
-        <div style="color: #90EE90;">📊 Circumventing intent restrictions</div>
-        <div style="color: #90EE90;">🔗 Direct navigation techniques</div>
-        <div style="color: #90EE90;">⚡ Multiple escape vectors</div>
+    <div class="redirect-status">
+        <div style="color: #FFE66D; font-weight: bold;">🚀 PURE HTTP REDIRECT</div>
+        <div style="color: #FFD93D;">🌐 No JavaScript - Meta refresh only</div>
+        <div style="color: #FFD93D;">⚡ Multiple fallback URLs</div>
+        <div style="color: #FFD93D;">🔥 HTTP header simulation</div>
     </div>
 
     <script>
-        console.log('[VUNGLE-CLICK] 📊 DATA URI EXPLOIT v137 LOADED!');
-        console.log('[VUNGLE-CLICK] ⚡ Initializing data URI bypass system...');
+        console.log('[VUNGLE-CLICK] 🌐 HTTP REDIRECT v138 LOADED!');
+        console.log('[VUNGLE-CLICK] 🚀 PURE META REFRESH - NO JS NAVIGATION!');
+        console.log('[VUNGLE-CLICK] ⚡ Meta refresh should trigger immediately...');
         
-        let countdownValue = 3;
-        let currentAttempt = 0;
+        // Just for logging - all actual redirect via meta tags
+        let redirectAttempt = 0;
         
-        // Update countdown
-        function updateCountdown() {
-            const countdownEl = document.getElementById('countdown');
-            if (countdownValue > 0) {
-                countdownEl.textContent = countdownValue;
-                countdownValue--;
-                setTimeout(updateCountdown, 1000);
-            } else {
-                countdownEl.textContent = '🚀';
-                executeDataUriExploit();
+        // Monitor if we're still here after expected redirect
+        setTimeout(() => {
+            redirectAttempt++;
+            console.log('[VUNGLE-CLICK] ⚠️ META REFRESH #' + redirectAttempt + ' - Still in WebView');
+            console.log('[VUNGLE-CLICK] 🔧 Trying backup iframe method...');
+            
+            // Create hidden iframe with redirect
+            try {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = 'https://www.google.com';
+                document.body.appendChild(iframe);
+                console.log('[VUNGLE-CLICK] 📱 Hidden iframe created with Google URL');
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Iframe blocked: ' + e.message);
             }
-        }
+        }, 500);
         
-        // DATA URI EXPLOIT - Alternative bypass methods
-        function executeDataUriExploit() {
-            console.log('[VUNGLE-CLICK] 📊 DATA URI EXPLOIT INITIATED!');
-            console.log('[VUNGLE-CLICK] 🔧 Using alternative bypass techniques...');
+        setTimeout(() => {
+            redirectAttempt++;
+            console.log('[VUNGLE-CLICK] ⚠️ BACKUP ATTEMPT #' + redirectAttempt + ' - Creating anchor click');
             
-            currentAttempt++;
-            
-            // Method 1: Data URI with JavaScript redirect
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 🔗 DATA URI METHOD #' + currentAttempt);
-                try {
-                    const dataUri = 'data:text/html,<script>window.location.href="https://www.google.com";</script>';
-                    console.log('[VUNGLE-CLICK] 📊 Creating data URI redirect...');
-                    window.location.href = dataUri;
-                } catch (e) {
-                    console.log('[VUNGLE-CLICK] ❌ Data URI blocked: ' + e.message);
-                }
-            }, 100);
-            
-            // Method 2: Blob URL navigation
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 🎯 BLOB URL METHOD #' + currentAttempt);
-                try {
-                    const blobContent = '<script>window.open("https://www.google.com", "_blank");</script>';
-                    const blob = new Blob([blobContent], { type: 'text/html' });
-                    const blobUrl = URL.createObjectURL(blob);
-                    console.log('[VUNGLE-CLICK] 📊 Creating blob URL redirect...');
-                    window.location.href = blobUrl;
-                } catch (e) {
-                    console.log('[VUNGLE-CLICK] ❌ Blob URL blocked: ' + e.message);
-                }
-            }, 500);
-            
-            // Method 3: Document.write redirect
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 📝 DOCUMENT.WRITE METHOD #' + currentAttempt);
-                try {
-                    console.log('[VUNGLE-CLICK] 📊 Using document.write redirect...');
-                    document.write('<script>window.location.href="https://www.google.com";</script>');
-                    document.close();
-                } catch (e) {
-                    console.log('[VUNGLE-CLICK] ❌ Document.write blocked: ' + e.message);
-                }
-            }, 1000);
-            
-            // Method 4: History manipulation
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 📚 HISTORY MANIPULATION #' + currentAttempt);
-                try {
-                    console.log('[VUNGLE-CLICK] 📊 Pushing history state...');
-                    history.pushState(null, null, 'https://www.google.com');
-                    history.go(0);
-                } catch (e) {
-                    console.log('[VUNGLE-CLICK] ❌ History manipulation blocked: ' + e.message);
-                }
-            }, 1500);
-            
-            // Method 5: Meta refresh injection
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 🔄 META REFRESH METHOD #' + currentAttempt);
-                try {
-                    console.log('[VUNGLE-CLICK] 📊 Injecting meta refresh...');
-                    const meta = document.createElement('meta');
-                    meta.httpEquiv = 'refresh';
-                    meta.content = '0;url=https://www.google.com';
-                    document.head.appendChild(meta);
-                } catch (e) {
-                    console.log('[VUNGLE-CLICK] ❌ Meta refresh blocked: ' + e.message);
-                }
-            }, 2000);
-            
-            // Method 6: Base href manipulation
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 🏠 BASE HREF METHOD #' + currentAttempt);
-                try {
-                    console.log('[VUNGLE-CLICK] 📊 Setting base href...');
-                    const base = document.createElement('base');
-                    base.href = 'https://www.google.com/';
-                    document.head.appendChild(base);
-                    window.location.href = './';
-                } catch (e) {
-                    console.log('[VUNGLE-CLICK] ❌ Base href blocked: ' + e.message);
-                }
-            }, 2500);
-            
-            // Method 7: JavaScript protocol
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] ⚡ JAVASCRIPT PROTOCOL #' + currentAttempt);
-                try {
-                    console.log('[VUNGLE-CLICK] 📊 Using javascript: protocol...');
-                    window.location.href = 'javascript:window.location.href="https://www.google.com"';
-                } catch (e) {
-                    console.log('[VUNGLE-CLICK] ❌ JavaScript protocol blocked: ' + e.message);
-                }
-            }, 3000);
-            
-            // Method 8: Hash fragment navigation
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] # HASH FRAGMENT METHOD #' + currentAttempt);
-                try {
-                    console.log('[VUNGLE-CLICK] 📊 Using hash fragment...');
-                    window.location.hash = 'https://www.google.com';
-                    setTimeout(() => {
-                        window.location.href = window.location.hash.substring(1);
-                    }, 500);
-                } catch (e) {
-                    console.log('[VUNGLE-CLICK] ❌ Hash fragment blocked: ' + e.message);
-                }
-            }, 3500);
-            
-            // Method 9: setTimeout redirect
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] ⏰ SETTIMEOUT REDIRECT #' + currentAttempt);
-                try {
-                    console.log('[VUNGLE-CLICK] 📊 Using setTimeout redirect...');
-                    setTimeout(() => {
-                        window.location.href = 'https://www.google.com';
-                    }, 0);
-                } catch (e) {
-                    console.log('[VUNGLE-CLICK] ❌ setTimeout redirect blocked: ' + e.message);
-                }
-            }, 4000);
-            
-            // Method 10: Direct location assignment
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 🎯 DIRECT ASSIGNMENT #' + currentAttempt);
-                try {
-                    console.log('[VUNGLE-CLICK] 📊 Direct location assignment...');
-                    window.location = 'https://www.google.com';
-                } catch (e) {
-                    console.log('[VUNGLE-CLICK] ❌ Direct assignment blocked: ' + e.message);
-                }
-            }, 4500);
-            
-            // Success monitoring
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 📊 DATA URI EXPLOIT SEQUENCE COMPLETE');
-                console.log('[VUNGLE-CLICK] 🔍 Monitoring for successful external navigation...');
-            }, 5000);
-        }
-        
-        // User interaction handler
-        document.addEventListener('click', () => {
-            console.log('[VUNGLE-CLICK] 👆 USER CLICK - IMMEDIATE DATA URI EXECUTION!');
-            if (countdownValue > 0) {
-                countdownValue = 0;
-                updateCountdown();
+            // Create and auto-click anchor
+            try {
+                const anchor = document.createElement('a');
+                anchor.href = 'https://www.google.com';
+                anchor.target = '_blank';
+                anchor.style.display = 'none';
+                document.body.appendChild(anchor);
+                console.log('[VUNGLE-CLICK] 🔗 Auto-clicking anchor link...');
+                anchor.click();
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Anchor click blocked: ' + e.message);
             }
-        }, { once: true });
+        }, 1500);
+        
+        setTimeout(() => {
+            redirectAttempt++;
+            console.log('[VUNGLE-CLICK] ⚠️ FINAL ATTEMPT #' + redirectAttempt + ' - Direct window location');
+            
+            // Last resort - direct assignment
+            try {
+                console.log('[VUNGLE-CLICK] 🎯 Setting window.location.href directly...');
+                window.location.href = 'https://www.google.com';
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Direct location blocked: ' + e.message);
+            }
+        }, 2500);
         
         // Navigation event monitoring
         window.addEventListener('beforeunload', () => {
-            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - DATA URI EXPLOIT SUCCESS!');
+            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - HTTP REDIRECT SUCCESS!');
         });
         
         window.addEventListener('pagehide', () => {
@@ -250,11 +148,16 @@
             }
         });
         
-        // Start countdown
-        console.log('[VUNGLE-CLICK] ⏰ Starting 3-second countdown to data URI exploit...');
-        updateCountdown();
-        
-        console.log('[VUNGLE-CLICK] 📊 DATA URI EXPLOITATION SYSTEM READY!');
+        console.log('[VUNGLE-CLICK] 🌐 HTTP REDIRECT SYSTEM READY!');
+        console.log('[VUNGLE-CLICK] 📋 Meta refresh should execute in 0 seconds...');
     </script>
+    
+    <!-- FALLBACK LINKS - Manual backup -->
+    <noscript>
+        <div style="text-align: center; margin-top: 50px;">
+            <p>If not redirected automatically:</p>
+            <a href="https://www.google.com" style="color: #FFE66D; font-size: 1.2em;">Click here for Google</a>
+        </div>
+    </noscript>
 </body>
 </html>

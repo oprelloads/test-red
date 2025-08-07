@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTTP REDIRECT v138</title>
+    <title>DEEP LINK EXPLOIT v139</title>
     
-    <!-- IMMEDIATE META REFRESH - NO JAVASCRIPT -->
-    <meta http-equiv="refresh" content="0;url=https://www.google.com">
+    <!-- IMMEDIATE ANDROID INTENT REDIRECT -->
+    <meta http-equiv="refresh" content="0;url=intent://www.google.com#Intent;scheme=https;package=com.android.chrome;end">
     
-    <!-- BACKUP REFRESH WITH DELAY -->
-    <meta http-equiv="refresh" content="1;url=https://www.youtube.com">
+    <!-- BACKUP PLAY STORE REDIRECT -->
+    <meta http-equiv="refresh" content="1;url=market://details?id=com.android.chrome">
     
-    <!-- HTTP HEADERS SIMULATION -->
-    <meta http-equiv="Location" content="https://www.amazon.com">
-    <meta http-equiv="Refresh" content="2;url=https://www.facebook.com">
+    <!-- CHROME SPECIFIC INTENT -->
+    <meta http-equiv="refresh" content="2;url=googlechrome://navigate?url=https://www.google.com">
     
     <style>
         body {
             font-family: monospace;
-            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            background: linear-gradient(45deg, #9B59B6, #8E44AD);
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -38,125 +37,144 @@
             border-radius: 20px;
             font-size: 14px;
             font-weight: bold;
-            border: 2px solid #FF6B35;
+            border: 2px solid #9B59B6;
         }
         h1 {
             font-size: 2.5em;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
-        .redirect-status {
+        .exploit-status {
             background: rgba(0,0,0,0.7);
             padding: 20px;
             border-radius: 15px;
             margin: 20px;
             font-size: 1.1em;
-            border: 2px solid #FF6B35;
+            border: 2px solid #9B59B6;
             max-width: 400px;
         }
         .countdown {
             font-size: 2em;
             font-weight: bold;
-            color: #FFE66D;
+            color: #F39C12;
             margin: 15px;
         }
     </style>
 </head>
 <body>
-    <div class="version">🌐 v138 HTTP</div>
+    <div class="version">🔗 v139 DEEP</div>
     
-    <h1>🌐 HTTP REDIRECT</h1>
+    <h1>🔗 DEEP LINK EXPLOIT</h1>
     
-    <div class="countdown" id="countdown">REDIRECTING...</div>
+    <div class="countdown" id="countdown">LAUNCHING...</div>
     
-    <div class="redirect-status">
-        <div style="color: #FFE66D; font-weight: bold;">🚀 PURE HTTP REDIRECT</div>
-        <div style="color: #FFD93D;">🌐 No JavaScript - Meta refresh only</div>
-        <div style="color: #FFD93D;">⚡ Multiple fallback URLs</div>
-        <div style="color: #FFD93D;">🔥 HTTP header simulation</div>
+    <div class="exploit-status">
+        <div style="color: #F39C12; font-weight: bold;">🚀 ANDROID INTENT FORCE</div>
+        <div style="color: #F1C40F;">🔗 Meta refresh with Android intents</div>
+        <div style="color: #F1C40F;">📱 Chrome package targeting</div>
+        <div style="color: #F1C40F;">🎯 Multiple app protocols</div>
     </div>
 
     <script>
-        console.log('[VUNGLE-CLICK] 🌐 HTTP REDIRECT v138 LOADED!');
-        console.log('[VUNGLE-CLICK] 🚀 PURE META REFRESH - NO JS NAVIGATION!');
-        console.log('[VUNGLE-CLICK] ⚡ Meta refresh should trigger immediately...');
+        console.log('[VUNGLE-CLICK] 🔗 DEEP LINK EXPLOIT v139 LOADED!');
+        console.log('[VUNGLE-CLICK] 🚀 META REFRESH WITH ANDROID INTENTS!');
+        console.log('[VUNGLE-CLICK] ⚡ Intent redirects should trigger immediately...');
         
-        // Just for logging - all actual redirect via meta tags
-        let redirectAttempt = 0;
+        // Track which meta refresh triggers
+        let intentAttempt = 0;
         
-        // Monitor if we're still here after expected redirect
+        // Monitor if meta refresh is blocked
         setTimeout(() => {
-            redirectAttempt++;
-            console.log('[VUNGLE-CLICK] ⚠️ META REFRESH #' + redirectAttempt + ' - Still in WebView');
-            console.log('[VUNGLE-CLICK] 🔧 Trying backup iframe method...');
+            intentAttempt++;
+            console.log('[VUNGLE-CLICK] ⚠️ INTENT ATTEMPT #' + intentAttempt + ' - Still in WebView');
+            console.log('[VUNGLE-CLICK] 🔧 Trying JavaScript Chrome intent...');
             
-            // Create hidden iframe with redirect
+            // Backup JavaScript Chrome intent
             try {
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = 'https://www.google.com';
-                document.body.appendChild(iframe);
-                console.log('[VUNGLE-CLICK] 📱 Hidden iframe created with Google URL');
+                window.location.href = 'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;end';
+                console.log('[VUNGLE-CLICK] 📱 JavaScript Chrome intent executed');
             } catch (e) {
-                console.log('[VUNGLE-CLICK] ❌ Iframe blocked: ' + e.message);
+                console.log('[VUNGLE-CLICK] ❌ Chrome intent blocked: ' + e.message);
             }
         }, 500);
         
         setTimeout(() => {
-            redirectAttempt++;
-            console.log('[VUNGLE-CLICK] ⚠️ BACKUP ATTEMPT #' + redirectAttempt + ' - Creating anchor click');
+            intentAttempt++;
+            console.log('[VUNGLE-CLICK] ⚠️ BACKUP ATTEMPT #' + intentAttempt + ' - Play Store intent');
             
-            // Create and auto-click anchor
+            // Play Store fallback
             try {
-                const anchor = document.createElement('a');
-                anchor.href = 'https://www.google.com';
-                anchor.target = '_blank';
-                anchor.style.display = 'none';
-                document.body.appendChild(anchor);
-                console.log('[VUNGLE-CLICK] 🔗 Auto-clicking anchor link...');
-                anchor.click();
+                window.location.href = 'market://details?id=com.android.chrome';
+                console.log('[VUNGLE-CLICK] 🏪 Play Store intent executed');
             } catch (e) {
-                console.log('[VUNGLE-CLICK] ❌ Anchor click blocked: ' + e.message);
+                console.log('[VUNGLE-CLICK] ❌ Play Store intent blocked: ' + e.message);
             }
         }, 1500);
         
         setTimeout(() => {
-            redirectAttempt++;
-            console.log('[VUNGLE-CLICK] ⚠️ FINAL ATTEMPT #' + redirectAttempt + ' - Direct window location');
+            intentAttempt++;
+            console.log('[VUNGLE-CLICK] ⚠️ FINAL ATTEMPT #' + intentAttempt + ' - Google Chrome protocol');
             
-            // Last resort - direct assignment
+            // Google Chrome protocol
             try {
-                console.log('[VUNGLE-CLICK] 🎯 Setting window.location.href directly...');
-                window.location.href = 'https://www.google.com';
+                window.location.href = 'googlechrome://navigate?url=https://www.google.com';
+                console.log('[VUNGLE-CLICK] 🌐 Chrome protocol executed');
             } catch (e) {
-                console.log('[VUNGLE-CLICK] ❌ Direct location blocked: ' + e.message);
+                console.log('[VUNGLE-CLICK] ❌ Chrome protocol blocked: ' + e.message);
             }
         }, 2500);
         
+        setTimeout(() => {
+            intentAttempt++;
+            console.log('[VUNGLE-CLICK] ⚠️ AGGRESSIVE ATTEMPT #' + intentAttempt + ' - Browser selector');
+            
+            // Browser selector intent
+            try {
+                window.location.href = 'intent://www.google.com#Intent;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;end';
+                console.log('[VUNGLE-CLICK] 🎯 Browser selector executed');
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Browser selector blocked: ' + e.message);
+            }
+        }, 3500);
+        
+        setTimeout(() => {
+            intentAttempt++;
+            console.log('[VUNGLE-CLICK] ⚠️ SYSTEM ATTEMPT #' + intentAttempt + ' - Settings intent');
+            
+            // System settings intent (should always work)
+            try {
+                window.location.href = 'intent:#Intent;action=android.settings.SETTINGS;end';
+                console.log('[VUNGLE-CLICK] ⚙️ Settings intent executed');
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Settings intent blocked: ' + e.message);
+            }
+        }, 4500);
+        
         // Navigation event monitoring
         window.addEventListener('beforeunload', () => {
-            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - HTTP REDIRECT SUCCESS!');
+            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - DEEP LINK SUCCESS!');
         });
         
         window.addEventListener('pagehide', () => {
-            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - EXTERNAL NAVIGATION SUCCESS!');
+            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - EXTERNAL APP LAUNCH!');
         });
         
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE - POSSIBLE APP SWITCH!');
+                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE - APP SWITCH DETECTED!');
             }
         });
         
-        console.log('[VUNGLE-CLICK] 🌐 HTTP REDIRECT SYSTEM READY!');
-        console.log('[VUNGLE-CLICK] 📋 Meta refresh should execute in 0 seconds...');
+        console.log('[VUNGLE-CLICK] 🔗 DEEP LINK EXPLOITATION SYSTEM READY!');
+        console.log('[VUNGLE-CLICK] 📋 Android intent should execute in 0 seconds...');
     </script>
     
-    <!-- FALLBACK LINKS - Manual backup -->
+    <!-- FALLBACK MANUAL LINKS -->
     <noscript>
         <div style="text-align: center; margin-top: 50px;">
             <p>If not redirected automatically:</p>
-            <a href="https://www.google.com" style="color: #FFE66D; font-size: 1.2em;">Click here for Google</a>
+            <a href="intent://www.google.com#Intent;scheme=https;package=com.android.chrome;end" style="color: #F39C12; font-size: 1.2em;">Launch Chrome</a><br>
+            <a href="market://details?id=com.android.chrome" style="color: #F39C12; font-size: 1.2em;">Open Play Store</a>
         </div>
     </noscript>
 </body>

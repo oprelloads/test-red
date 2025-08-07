@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>External Redirect Success</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+        }
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .subtitle {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #00ff88;
+        }
+        .timestamp {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 20px;
+        }
+        .celebration {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon celebration">🚀</div>
+        <h1>EXTERNAL REDIRECT SUCCESS!</h1>
+        <div class="subtitle">Banner Auto-Redirect Worked!</div>
+        
+        <div class="info">
+            <strong>✅ Achievement Unlocked:</strong><br>
+            Successfully redirected from Vungle banner to external browser!
+        </div>
+        
+        <div class="info">
+            <strong>🎯 Test Results:</strong><br>
+            • Banner loaded correctly<br>
+            • Timing sequence executed<br>
+            • External browser launched<br>
+            • Auto-redirect reproduced!
+        </div>
+        
+        <div class="timestamp" id="timestamp"></div>
+    </div>
+
+    <script>
+        // Display current timestamp
+        document.getElementById('timestamp').textContent = 
+            'Redirected at: ' + new Date().toLocaleString();
+        
+        // Log success for debugging
+        console.log('[EXTERNAL-REDIRECT] SUCCESS! Auto-redirect from banner worked!');
+        console.log('[EXTERNAL-REDIRECT] Timestamp: ' + new Date().toISOString());
+        console.log('[EXTERNAL-REDIRECT] User Agent: ' + navigator.userAgent);
+        console.log('[EXTERNAL-REDIRECT] Referrer: ' + document.referrer);
+        
+        // Optional: Auto-redirect to a specific site after showing success
+        // setTimeout(() => {
+        //     window.location.href = 'https://www.google.com';
+        // }, 5000);
+    </script>
+</body>
+</html>

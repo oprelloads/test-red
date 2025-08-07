@@ -3,153 +3,102 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
-    <title>Chrome Specific v143</title>
+    
+    <!-- CHROME DIRECT META REFRESH - EXECUTES BEFORE JAVASCRIPT -->
+    <meta http-equiv="refresh" content="0;url=googlechrome://navigate?url=https://www.google.com">
+    
+    <!-- BACKUP CHROME INTENT META REFRESH -->
+    <meta http-equiv="refresh" content="1;url=intent://www.google.com#Intent;scheme=https;package=com.android.chrome;component=com.google.android.apps.chrome/com.google.android.apps.chrome.Main;end">
+    
+    <!-- CHROME BETA FALLBACK -->
+    <meta http-equiv="refresh" content="2;url=intent://www.google.com#Intent;scheme=https;package=com.chrome.beta;end">
+    
+    <title>Meta Chrome v144</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
             padding: 20px; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ea4335 0%, #4285f4 100%);
             color: white;
             text-align: center;
         }
-        .button {
-            display: inline-block;
-            padding: 15px 25px;
-            margin: 10px;
-            background: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .button:hover { background: #45a049; transform: scale(1.05); }
         .status { 
             background: rgba(0,0,0,0.3); 
             padding: 15px; 
             border-radius: 10px; 
             margin: 20px 0;
-            text-align: left;
         }
-        .chrome-intent { background: #ea4335; }
-        .browser-intent { background: #4285f4; }
-        .fallback-intent { background: #34a853; }
+        .button {
+            display: inline-block;
+            padding: 15px 25px;
+            margin: 10px;
+            background: #ea4335;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <h1>🎯 CHROME SPECIFIC v143</h1>
+    <h1>🎯 META CHROME v144</h1>
     <div class="status">
-        <h3>📊 Targeting Chrome Directly</h3>
-        <p id="analysis">Loading Chrome-specific breakout...</p>
+        <h3>📊 HTTP-Level Chrome Targeting</h3>
+        <p>Using meta refresh to bypass JavaScript restrictions</p>
+        <p><strong>Strategy:</strong> Multiple Chrome intents with timing</p>
     </div>
 
-    <!-- CHROME DIRECT INTENTS -->
-    <h2>🌐 Chrome Direct Launch</h2>
-    <a href="googlechrome://navigate?url=https://www.google.com" class="button chrome-intent" onclick="logClick(this)">
-        📱 Chrome Navigate Protocol
-    </a>
-    
-    <a href="intent://www.google.com#Intent;scheme=https;package=com.android.chrome;component=com.google.android.apps.chrome/com.google.android.apps.chrome.Main;end" class="button chrome-intent" onclick="logClick(this)">
-        🎯 Chrome Component Direct
-    </a>
-
-    <!-- BROWSER SPECIFIC PACKAGES -->
-    <h2>🔄 Browser Package Targeting</h2>
-    <a href="intent://www.google.com#Intent;scheme=https;package=com.chrome.beta;end" class="button browser-intent" onclick="logClick(this)">
-        🧪 Chrome Beta
-    </a>
-    
-    <a href="intent://www.google.com#Intent;scheme=https;package=com.chrome.dev;end" class="button browser-intent" onclick="logClick(this)">
-        🛠️ Chrome Dev
-    </a>
-    
-    <a href="intent://www.google.com#Intent;scheme=https;package=com.chrome.canary;end" class="button browser-intent" onclick="logClick(this)">
-        🐤 Chrome Canary
-    </a>
-
-    <!-- SYSTEM BROWSERS -->
-    <h2>🌐 System Browser Fallbacks</h2>
-    <a href="intent://www.google.com#Intent;scheme=https;package=com.sec.android.app.sbrowser;end" class="button fallback-intent" onclick="logClick(this)">
-        📱 Samsung Browser
-    </a>
-    
-    <a href="intent://www.google.com#Intent;scheme=https;package=org.mozilla.firefox;end" class="button fallback-intent" onclick="logClick(this)">
-        🦊 Firefox
-    </a>
-
-    <!-- AUTO-EXECUTION SEQUENCE -->
+    <h2>🚀 Auto-Execution Status</h2>
     <div class="status">
-        <h3>⚡ Auto-Execution Status</h3>
-        <div id="auto-status">Preparing Chrome-specific sequence...</div>
+        <p>⚡ Meta refresh should execute immediately</p>
+        <p>🎯 Chrome navigate protocol (0 seconds)</p>
+        <p>📱 Chrome component intent (1 second)</p>
+        <p>🧪 Chrome beta fallback (2 seconds)</p>
     </div>
+
+    <!-- MANUAL FALLBACK BUTTONS -->
+    <h2>👆 Manual Fallback</h2>
+    <a href="googlechrome://navigate?url=https://www.google.com" class="button" onclick="logClick(this)">
+        📱 Chrome Navigate Direct
+    </a>
+    
+    <a href="intent://www.google.com#Intent;scheme=https;package=com.android.chrome;end" class="button" onclick="logClick(this)">
+        🎯 Chrome Standard Intent
+    </a>
 
     <script>
-        console.log('[VUNGLE-CLICK] 🎯 CHROME SPECIFIC v143 LOADED!');
-        console.log('[VUNGLE-CLICK] 🌐 Targeting Chrome packages directly');
-        console.log('[VUNGLE-CLICK] 💡 Bypassing Android app selector');
+        console.log('[VUNGLE-CLICK] 🎯 META CHROME v144 LOADED!');
+        console.log('[VUNGLE-CLICK] 🌐 HTTP meta refresh with Chrome targeting');
+        console.log('[VUNGLE-CLICK] 💡 Bypassing JavaScript intent restrictions');
         
-        // Environment analysis
-        const isAndroid = /Android/i.test(navigator.userAgent);
-        const isWebView = /wv\)/i.test(navigator.userAgent);
-        const isChrome = /Chrome/i.test(navigator.userAgent);
-        
-        document.getElementById('analysis').innerHTML = `
-            <strong>📱 Environment:</strong><br>
-            - Android: ${isAndroid}<br>
-            - WebView: ${isWebView}<br>  
-            - Chrome: ${isChrome}<br>
-            - User Agent: ${navigator.userAgent.substring(0, 100)}...
-        `;
-
         function logClick(element) {
             const intent = element.href;
-            console.log(`[VUNGLE-CLICK] 👆 USER CLICKED: ${intent}`);
-            console.log(`[VUNGLE-CLICK] 🎯 Button: ${element.textContent.trim()}`);
+            console.log(`[VUNGLE-CLICK] 👆 USER CLICKED FALLBACK: ${intent}`);
         }
 
         // Event monitoring
         window.addEventListener('beforeunload', () => {
-            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - CHROME INTENT TRIGGERED!');
+            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - META CHROME REDIRECT!');
         });
 
         window.addEventListener('pagehide', () => {
-            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - CHROME LAUNCH SUCCESS!');
+            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - CHROME META SUCCESS!');
         });
 
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE - CHROME APP SWITCH!');
+                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE - CHROME LAUNCH!');
             }
         });
 
-        // Automated sequence after 3 seconds
-        setTimeout(() => {
-            console.log('[VUNGLE-CLICK] ⚡ AUTO-EXECUTING CHROME DIRECT...');
-            document.getElementById('auto-status').innerHTML = '🎯 Executing Chrome direct intent...';
-            
-            // Try Chrome navigate protocol first
-            try {
-                window.location.href = 'googlechrome://navigate?url=https://www.google.com';
-                console.log('[VUNGLE-CLICK] 📱 Chrome navigate protocol executed');
-            } catch (e) {
-                console.log('[VUNGLE-CLICK] ❌ Chrome navigate failed:', e.message);
-                
-                // Fallback to Chrome component intent
-                setTimeout(() => {
-                    try {
-                        window.location.href = 'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;component=com.google.android.apps.chrome/com.google.android.apps.chrome.Main;end';
-                        console.log('[VUNGLE-CLICK] 🎯 Chrome component intent executed');
-                    } catch (e2) {
-                        console.log('[VUNGLE-CLICK] ❌ Chrome component failed:', e2.message);
-                    }
-                }, 1000);
-            }
-        }, 3000);
-
-        console.log('[VUNGLE-CLICK] 🌐 CHROME SPECIFIC SYSTEM READY!');
-        console.log('[VUNGLE-CLICK] 📋 Chrome package variants prepared!');
+        // Log environment
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const isWebView = /wv\)/i.test(navigator.userAgent);
+        
+        console.log(`[VUNGLE-CLICK] 📊 Environment: Android=${isAndroid}, WebView=${isWebView}`);
+        console.log('[VUNGLE-CLICK] 🌐 META CHROME SYSTEM READY!');
+        console.log('[VUNGLE-CLICK] 📋 HTTP-level Chrome redirect prepared!');
     </script>
 </body>
 </html>

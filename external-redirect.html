@@ -3,32 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MULTI INTENT BARRAGE v140</title>
+    <title>CHROME DIRECT v141</title>
     
-    <!-- MULTIPLE SIMULTANEOUS INTENT REDIRECTS -->
+    <!-- SINGLE DIRECT CHROME INTENT -->
     <meta http-equiv="refresh" content="0;url=intent://www.google.com#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://www.google.com;end">
-    <meta http-equiv="refresh" content="0;url=intent://www.google.com#Intent;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.android.chrome;end">
-    <meta http-equiv="refresh" content="0;url=intent://www.google.com#Intent;scheme=https;package=com.chrome.beta;S.browser_fallback_url=https://www.google.com;end">
-    <meta http-equiv="refresh" content="0;url=intent://www.google.com#Intent;scheme=https;package=com.chrome.dev;S.browser_fallback_url=https://www.google.com;end">
-    <meta http-equiv="refresh" content="0;url=intent://www.google.com#Intent;scheme=https;package=com.chrome.canary;S.browser_fallback_url=https://www.google.com;end">
-    
-    <!-- BROWSER SELECTOR INTENTS -->
-    <meta http-equiv="refresh" content="1;url=intent://www.google.com#Intent;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;end">
-    <meta http-equiv="refresh" content="1;url=intent://www.google.com#Intent;action=android.intent.action.WEB_SEARCH;end">
-    
-    <!-- SYSTEM INTENTS -->
-    <meta http-equiv="refresh" content="2;url=intent:#Intent;action=android.settings.APPLICATION_SETTINGS;end">
-    <meta http-equiv="refresh" content="2;url=intent:#Intent;action=android.settings.SETTINGS;end">
-    
-    <!-- EXTERNAL BROWSER PROTOCOLS -->
-    <meta http-equiv="refresh" content="3;url=googlechrome://navigate?url=https://www.google.com">
-    <meta http-equiv="refresh" content="3;url=firefox://open-url?url=https://www.google.com">
-    <meta http-equiv="refresh" content="3;url=opera://navigate?url=https://www.google.com">
     
     <style>
         body {
             font-family: monospace;
-            background: linear-gradient(45deg, #E74C3C, #C0392B);
+            background: linear-gradient(45deg, #2ECC71, #27AE60);
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -48,163 +31,109 @@
             border-radius: 20px;
             font-size: 14px;
             font-weight: bold;
-            border: 2px solid #E74C3C;
+            border: 2px solid #2ECC71;
         }
         h1 {
             font-size: 2.5em;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
-        .barrage-status {
+        .status {
             background: rgba(0,0,0,0.7);
             padding: 20px;
             border-radius: 15px;
             margin: 20px;
             font-size: 1.1em;
-            border: 2px solid #E74C3C;
+            border: 2px solid #2ECC71;
             max-width: 400px;
         }
         .countdown {
             font-size: 2em;
             font-weight: bold;
-            color: #F39C12;
+            color: #F1C40F;
             margin: 15px;
         }
     </style>
 </head>
 <body>
-    <div class="version">💥 v140 BARRAGE</div>
+    <div class="version">🎯 v141 DIRECT</div>
     
-    <h1>💥 INTENT BARRAGE</h1>
+    <h1>🎯 CHROME DIRECT</h1>
     
-    <div class="countdown" id="countdown">ATTACKING...</div>
+    <div class="countdown" id="countdown">LAUNCHING...</div>
     
-    <div class="barrage-status">
-        <div style="color: #F39C12; font-weight: bold;">🚀 12 SIMULTANEOUS INTENTS</div>
-        <div style="color: #F1C40F;">⚡ Multiple Chrome package variants</div>
-        <div style="color: #F1C40F;">🎯 Browser selector fallbacks</div>
-        <div style="color: #F1C40F;">⚙️ System settings emergency exits</div>
-        <div style="color: #F1C40F;">🌐 External browser protocols</div>
+    <div class="status">
+        <div style="color: #F1C40F; font-weight: bold;">🎯 SINGLE CHROME INTENT</div>
+        <div style="color: #F39C12;">📱 Direct package targeting</div>
+        <div style="color: #F39C12;">🔗 Browser fallback URL</div>
+        <div style="color: #F39C12;">⚡ Clean, focused approach</div>
     </div>
 
     <script>
-        console.log('[VUNGLE-CLICK] 💥 MULTI INTENT BARRAGE v140 LOADED!');
-        console.log('[VUNGLE-CLICK] 🚀 12 SIMULTANEOUS INTENT ATTACKS!');
-        console.log('[VUNGLE-CLICK] ⚡ Meta refresh barrage should trigger immediately...');
+        console.log('[VUNGLE-CLICK] 🎯 CHROME DIRECT v141 LOADED!');
+        console.log('[VUNGLE-CLICK] 🚀 SINGLE DIRECT CHROME INTENT!');
+        console.log('[VUNGLE-CLICK] ⚡ Meta refresh should launch Chrome directly...');
         
-        let barrageAttempt = 0;
+        // Simple monitoring
+        let launchAttempt = 0;
         
-        // Additional JavaScript barrage if meta refresh fails
+        // Check if we're still here after expected redirect
         setTimeout(() => {
-            barrageAttempt++;
-            console.log('[VUNGLE-CLICK] ⚠️ BARRAGE WAVE #' + barrageAttempt + ' - JavaScript backup');
+            launchAttempt++;
+            console.log('[VUNGLE-CLICK] ⚠️ STILL IN WEBVIEW #' + launchAttempt + ' - Meta refresh may be blocked');
+            console.log('[VUNGLE-CLICK] 🎯 Trying JavaScript Chrome intent...');
             
-            // Rapid-fire JavaScript intents
-            const intents = [
-                'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://www.google.com;end',
-                'intent://www.google.com#Intent;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.android.chrome;end',
-                'intent://www.google.com#Intent;scheme=https;package=com.chrome.beta;S.browser_fallback_url=https://www.google.com;end',
-                'intent://www.google.com#Intent;scheme=https;package=com.chrome.dev;S.browser_fallback_url=https://www.google.com;end',
-                'intent://www.google.com#Intent;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;end',
-                'intent://www.google.com#Intent;action=android.intent.action.WEB_SEARCH;end',
-                'intent:#Intent;action=android.settings.APPLICATION_SETTINGS;end',
-                'intent:#Intent;action=android.settings.SETTINGS;end',
-                'googlechrome://navigate?url=https://www.google.com',
-                'firefox://open-url?url=https://www.google.com',
-                'market://details?id=com.android.chrome',
-                'https://www.google.com'
-            ];
-            
-            // Fire all intents rapidly
-            intents.forEach((intent, index) => {
-                setTimeout(() => {
-                    try {
-                        console.log('[VUNGLE-CLICK] 🎯 JS INTENT #' + (index + 1) + ': ' + intent.substring(0, 50) + '...');
-                        window.location.href = intent;
-                    } catch (e) {
-                        console.log('[VUNGLE-CLICK] ❌ Intent #' + (index + 1) + ' blocked: ' + e.message);
-                    }
-                }, index * 100); // 100ms between each intent
-            });
-            
-        }, 100);
-        
-        setTimeout(() => {
-            barrageAttempt++;
-            console.log('[VUNGLE-CLICK] ⚠️ BARRAGE WAVE #' + barrageAttempt + ' - Window.open assault');
-            
-            // Window.open assault
-            const targets = [
-                'https://www.google.com',
-                'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;end',
-                'googlechrome://navigate?url=https://www.google.com',
-                'market://details?id=com.android.chrome'
-            ];
-            
-            targets.forEach((target, index) => {
-                setTimeout(() => {
-                    try {
-                        console.log('[VUNGLE-CLICK] 🪟 WINDOW.OPEN #' + (index + 1) + ': ' + target.substring(0, 50) + '...');
-                        window.open(target, '_blank');
-                        window.open(target, '_top');
-                        window.open(target, '_self');
-                    } catch (e) {
-                        console.log('[VUNGLE-CLICK] ❌ Window.open #' + (index + 1) + ' blocked: ' + e.message);
-                    }
-                }, index * 200);
-            });
-            
-        }, 1500);
-        
-        setTimeout(() => {
-            barrageAttempt++;
-            console.log('[VUNGLE-CLICK] ⚠️ BARRAGE WAVE #' + barrageAttempt + ' - Form submission bomb');
-            
-            // Create multiple forms and submit simultaneously
-            for (let i = 0; i < 5; i++) {
-                try {
-                    const form = document.createElement('form');
-                    form.method = 'GET';
-                    form.action = 'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;end';
-                    form.target = ['_blank', '_top', '_self', '_parent'][i % 4];
-                    form.style.display = 'none';
-                    document.body.appendChild(form);
-                    
-                    console.log('[VUNGLE-CLICK] 📝 FORM BOMB #' + (i + 1) + ' submitted with target: ' + form.target);
-                    form.submit();
-                } catch (e) {
-                    console.log('[VUNGLE-CLICK] ❌ Form bomb #' + (i + 1) + ' blocked: ' + e.message);
-                }
+            try {
+                window.location.href = 'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://www.google.com;end';
+                console.log('[VUNGLE-CLICK] 📱 JavaScript Chrome intent executed');
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Chrome intent blocked: ' + e.message);
             }
+        }, 1000);
+        
+        setTimeout(() => {
+            launchAttempt++;
+            console.log('[VUNGLE-CLICK] ⚠️ STILL IN WEBVIEW #' + launchAttempt + ' - Trying fallback URL');
             
+            try {
+                window.location.href = 'https://www.google.com';
+                console.log('[VUNGLE-CLICK] 🌐 Fallback URL executed');
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Fallback URL blocked: ' + e.message);
+            }
+        }, 2000);
+        
+        setTimeout(() => {
+            launchAttempt++;
+            console.log('[VUNGLE-CLICK] ⚠️ STILL IN WEBVIEW #' + launchAttempt + ' - WebView containment confirmed');
+            console.log('[VUNGLE-CLICK] 🔒 All navigation attempts are being contained within WebView');
+            console.log('[VUNGLE-CLICK] 💡 This suggests strong WebView security policies are in place');
         }, 3000);
         
         // Navigation event monitoring
         window.addEventListener('beforeunload', () => {
-            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - BARRAGE SUCCESS!');
+            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - NAVIGATION DETECTED!');
         });
         
         window.addEventListener('pagehide', () => {
-            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - EXTERNAL BREAKTHROUGH!');
+            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - POSSIBLE EXTERNAL LAUNCH!');
         });
         
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE - BARRAGE APP SWITCH!');
+                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE - APP SWITCH OR HIDE!');
             }
         });
         
-        console.log('[VUNGLE-CLICK] 💥 MULTI INTENT BARRAGE SYSTEM ARMED!');
-        console.log('[VUNGLE-CLICK] 📋 12 intent attacks should execute in 0 seconds...');
+        console.log('[VUNGLE-CLICK] 🎯 CHROME DIRECT SYSTEM READY!');
+        console.log('[VUNGLE-CLICK] 📋 Chrome should launch in 0 seconds...');
     </script>
     
-    <!-- MANUAL FALLBACK LINKS -->
+    <!-- FALLBACK LINK -->
     <noscript>
         <div style="text-align: center; margin-top: 50px;">
-            <p>Emergency exits:</p>
-            <a href="intent://www.google.com#Intent;scheme=https;package=com.android.chrome;end" style="color: #F39C12;">Chrome Intent</a><br>
-            <a href="intent:#Intent;action=android.settings.SETTINGS;end" style="color: #F39C12;">System Settings</a><br>
-            <a href="https://www.google.com" style="color: #F39C12;">Direct URL</a>
+            <p>If Chrome doesn't launch automatically:</p>
+            <a href="intent://www.google.com#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://www.google.com;end" style="color: #F1C40F; font-size: 1.2em;">Launch Chrome</a>
         </div>
     </noscript>
 </body>

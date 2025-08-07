@@ -3,211 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>External Redirect Success</title>
+    <title>EXTERNAL REDIRECT SUCCESS v128!</title>
     <style>
         body {
-            margin: 0;
-            padding: 20px;
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(45deg, #4CAF50, #2196F3);
+            color: #fff;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
+            height: 100vh;
+            margin: 0;
             text-align: center;
+            overflow: hidden;
         }
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
-        }
-        .success-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            display: block;
-            animation: bounce 2s infinite;
+        .version {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
         }
         h1 {
             font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .success-message {
+            font-size: 1.5em;
             margin-bottom: 20px;
-            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
-        .subtitle {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        .info {
-            background: rgba(255, 255, 255, 0.1);
+        .status-box {
+            background-color: rgba(0, 0, 0, 0.4);
             padding: 20px;
             border-radius: 10px;
-            margin: 20px 0;
-            border-left: 4px solid #00ff88;
-        }
-        .timestamp {
-            font-size: 0.9em;
-            opacity: 0.8;
             margin-top: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
-        .breakout-status {
-            background: rgba(255, 0, 0, 0.3);
-            padding: 15px;
+        .status-item {
+            margin-bottom: 8px;
+            font-size: 1em;
+            text-align: left;
+            padding: 5px;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+        }
+        .status-item.success {
+            background: rgba(76, 175, 80, 0.3);
+        }
+        .status-item.error {
+            background: rgba(244, 67, 54, 0.3);
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: rgba(255,255,255,0.2);
             border-radius: 10px;
-            margin: 20px 0;
-            border-left: 4px solid #ff4444;
+            margin-top: 15px;
+            overflow: hidden;
         }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            60% {
-                transform: translateY(-5px);
-            }
+        .progress {
+            width: 0%;
+            height: 15px;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            text-align: center;
+            line-height: 15px;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .method-list {
+            text-align: left;
+            margin-top: 10px;
+        }
+        .method-item {
+            margin: 5px 0;
+            padding: 3px 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="success-icon">🚀</div>
-        <h1>EXTERNAL REDIRECT SUCCESS!</h1>
-        <div class="subtitle">Banner Auto-Redirect Worked!</div>
-        
-        <div class="info">
-            <strong>✅ Achievement Unlocked:</strong><br>
-            Successfully redirected from Vungle banner to external content!
+    <div class="version">🌐 v128</div>
+    
+    <h1>🚀 EXTERNAL SUCCESS!</h1>
+    <div class="success-message">Banner Auto-Redirect Worked!</div>
+    
+    <div class="status-box">
+        <h2>🌐 Browser Breakout v128</h2>
+        <div id="status-log">
+            <div class="status-item">🔄 Initializing enhanced breakout attempts...</div>
         </div>
-        
-        <div class="info">
-            <strong>🎯 Test Results:</strong><br>
-            • Banner loaded correctly<br>
-            • Timing sequence executed<br>
-            • External content loaded<br>
-            • Now attempting browser breakout...
+        <div class="progress-bar">
+            <div class="progress" id="progress-bar">0%</div>
         </div>
+        <p id="attempt-counter">Attempt: 0/8</p>
         
-        <div class="breakout-status" id="breakout-status">
-            <strong>🌐 Browser Breakout Status:</strong><br>
-            <span id="status-text">Initializing breakout attempts...</span>
+        <div class="method-list">
+            <h3>🛠️ Breakout Methods v128:</h3>
+            <div class="method-item">📞 1. Tel scheme (direct dialer)</div>
+            <div class="method-item">🌐 2. Window.open (Google)</div>
+            <div class="method-item">⬆️ 3. Top-level navigation</div>
+            <div class="method-item">👨‍👩‍👧‍👦 4. Parent targeting</div>
+            <div class="method-item">📋 5. Form submission (_blank)</div>
+            <div class="method-item">🔗 6. Market scheme (Play Store)</div>
+            <div class="method-item">📱 7. Intent scheme (Chrome)</div>
+            <div class="method-item">📧 8. Mailto scheme</div>
         </div>
-        
-        <div class="timestamp" id="timestamp"></div>
     </div>
 
     <script>
-        // Display current timestamp
-        document.getElementById('timestamp').textContent = 
-            'Loaded at: ' + new Date().toLocaleString();
-        
-        // CONSISTENT LOGGING - Same tag as banner
-        console.log('[VUNGLE-CLICK] EXTERNAL SUCCESS! External content loaded in banner!');
-        console.log('[VUNGLE-CLICK] Timestamp: ' + new Date().toISOString());
-        console.log('[VUNGLE-CLICK] User Agent: ' + navigator.userAgent);
-        console.log('[VUNGLE-CLICK] Referrer: ' + document.referrer);
-        
-        // BROWSER BREAKOUT ATTEMPTS
-        console.log('[VUNGLE-CLICK] STARTING BROWSER BREAKOUT ATTEMPTS');
-        
-        const statusDiv = document.getElementById('status-text');
+        console.log('[VUNGLE-CLICK] 🌐 EXTERNAL v128 LOADED! Enhanced breakout starting...');
+
         let attemptCount = 0;
+        const maxAttempts = 8;
         
-        function updateStatus(message) {
-            statusDiv.innerHTML = message;
-            console.log('[VUNGLE-CLICK] ' + message);
-        }
-        
-        // Wait 2 seconds, then start breakout attempts
-        setTimeout(() => {
-            updateStatus('🚀 Starting browser breakout attempts...');
-            
-            // Method 1: Try to break out with window.open
-            setTimeout(() => {
-                attemptCount++;
-                updateStatus(`Attempt ${attemptCount}: Window.open to Google...`);
-                try {
-                    const externalWindow = window.open('https://www.google.com', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
-                    if (externalWindow) {
-                        updateStatus('✅ BREAKTHROUGH! External window opened!');
-                        console.log('[VUNGLE-CLICK] ✅ EXTERNAL WINDOW OPENED TO GOOGLE');
+        const methods = [
+            { 
+                name: 'Tel scheme (dialer)', 
+                func: () => { 
+                    window.location.href = 'tel:+1234567890'; 
+                } 
+            },
+            { 
+                name: 'Window.open (Google)', 
+                func: () => window.open('https://www.google.com', '_blank', 'noopener,noreferrer') 
+            },
+            { 
+                name: 'Top-level navigation', 
+                func: () => { 
+                    if (window.top && window.top !== window.self) {
+                        window.top.location.href = 'https://www.google.com'; 
                     } else {
-                        updateStatus('❌ Window.open blocked, trying next method...');
-                        console.log('[VUNGLE-CLICK] ❌ WINDOW.OPEN BLOCKED');
+                        window.location.href = 'https://www.google.com'; 
                     }
-                } catch(e) {
-                    updateStatus('❌ Window.open error: ' + e.message);
-                    console.log('[VUNGLE-CLICK] ❌ WINDOW.OPEN ERROR: ' + e.message);
-                }
-            }, 2000);
-            
-            // Method 2: Try top-level navigation
-            setTimeout(() => {
-                attemptCount++;
-                updateStatus(`Attempt ${attemptCount}: Top-level navigation...`);
-                try {
-                    if (window.top && window.top !== window) {
-                        window.top.location.href = 'https://www.google.com';
-                        updateStatus('✅ BREAKTHROUGH! Top navigation fired!');
-                        console.log('[VUNGLE-CLICK] ✅ TOP NAVIGATION FIRED');
+                } 
+            },
+            { 
+                name: 'Parent targeting', 
+                func: () => { 
+                    if (window.parent && window.parent !== window.self) {
+                        window.parent.location.href = 'https://www.google.com'; 
                     } else {
-                        window.location.href = 'https://www.google.com';
-                        updateStatus('✅ BREAKTHROUGH! Direct navigation fired!');
-                        console.log('[VUNGLE-CLICK] ✅ DIRECT NAVIGATION FIRED');
+                        window.location.href = 'https://www.google.com'; 
                     }
-                } catch(e) {
-                    updateStatus('❌ Navigation error: ' + e.message);
-                    console.log('[VUNGLE-CLICK] ❌ NAVIGATION ERROR: ' + e.message);
-                }
-            }, 4000);
-            
-            // Method 3: Try parent targeting
-            setTimeout(() => {
-                attemptCount++;
-                updateStatus(`Attempt ${attemptCount}: Parent window targeting...`);
-                try {
-                    if (window.parent && window.parent !== window) {
-                        window.parent.location.href = 'https://www.google.com';
-                        updateStatus('✅ BREAKTHROUGH! Parent navigation fired!');
-                        console.log('[VUNGLE-CLICK] ✅ PARENT NAVIGATION FIRED');
-                    }
-                } catch(e) {
-                    updateStatus('❌ Parent error: ' + e.message);
-                    console.log('[VUNGLE-CLICK] ❌ PARENT ERROR: ' + e.message);
-                }
-            }, 6000);
-            
-            // Method 4: Try form submission
-            setTimeout(() => {
-                attemptCount++;
-                updateStatus(`Attempt ${attemptCount}: Form submission to new window...`);
-                try {
+                } 
+            },
+            { 
+                name: 'Form submission (_blank)', 
+                func: () => {
                     const form = document.createElement('form');
                     form.method = 'GET';
                     form.action = 'https://www.google.com';
                     form.target = '_blank';
-                    form.style.display = 'none';
                     document.body.appendChild(form);
                     form.submit();
-                    updateStatus('✅ BREAKTHROUGH! Form submitted to new window!');
-                    console.log('[VUNGLE-CLICK] ✅ FORM SUBMISSION FIRED');
-                } catch(e) {
-                    updateStatus('❌ Form error: ' + e.message);
-                    console.log('[VUNGLE-CLICK] ❌ FORM ERROR: ' + e.message);
+                    document.body.removeChild(form);
                 }
-            }, 8000);
-            
-            // Final status
+            },
+            { 
+                name: 'Market scheme (Play Store)', 
+                func: () => { 
+                    window.location.href = 'market://details?id=com.android.chrome'; 
+                } 
+            },
+            { 
+                name: 'Intent scheme (Chrome)', 
+                func: () => { 
+                    window.location.href = 'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;end'; 
+                } 
+            },
+            { 
+                name: 'Mailto scheme', 
+                func: () => { 
+                    window.location.href = 'mailto:test@example.com?subject=Test'; 
+                } 
+            }
+        ];
+
+        function logStatus(message, isSuccess = false, isError = false) {
+            const logDiv = document.getElementById('status-log');
+            const newItem = document.createElement('div');
+            newItem.className = 'status-item' + (isSuccess ? ' success' : '') + (isError ? ' error' : '');
+            newItem.textContent = `• ${message}`;
+            logDiv.appendChild(newItem);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(`[VUNGLE-CLICK] ${message}`);
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progress-bar');
+            const percentage = (attemptCount / maxAttempts) * 100;
+            progressBar.style.width = `${percentage}%`;
+            progressBar.textContent = `${Math.round(percentage)}%`;
+            document.getElementById('attempt-counter').textContent = `Attempt: ${attemptCount}/${maxAttempts}`;
+        }
+
+        function tryBreakout() {
+            if (attemptCount < maxAttempts) {
+                const method = methods[attemptCount];
+                logStatus(`🚀 Attempting: ${method.name}`);
+                
+                try {
+                    method.func();
+                    logStatus(`✅ ${method.name} EXECUTED`, true);
+                } catch (e) {
+                    logStatus(`❌ ${method.name} ERROR: ${e.message}`, false, true);
+                }
+                
+                attemptCount++;
+                updateProgressBar();
+                
+                // Continue with next method after delay
+                setTimeout(tryBreakout, 3000);
+            } else {
+                logStatus('🏁 All v128 breakout attempts completed.', true);
+                logStatus('📊 If no external app launched, WebView containment is absolute.', false, true);
+            }
+        }
+
+        // Start attempts after page loads
+        window.onload = () => {
             setTimeout(() => {
-                updateStatus(`Completed ${attemptCount} breakout attempts. Check console for results.`);
-                console.log('[VUNGLE-CLICK] BREAKOUT ATTEMPTS COMPLETED');
-            }, 10000);
-            
-        }, 2000);
+                logStatus('🌐 Starting v128 enhanced browser breakout attempts...');
+                tryBreakout();
+            }, 1000);
+        };
+
+        // Monitor for success indicators
+        window.addEventListener('blur', () => {
+            console.log('[VUNGLE-CLICK] 🎉 BLUR EVENT - EXTERNAL APP LAUNCHED!');
+            logStatus('🎉 BLUR EVENT - EXTERNAL APP LAUNCHED!', true);
+        });
+        
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                console.log('[VUNGLE-CLICK] 🎉 PAGE HIDDEN - EXTERNAL APP LAUNCHED!');
+                logStatus('🎉 PAGE HIDDEN - EXTERNAL APP LAUNCHED!', true);
+            }
+        });
+
+        window.addEventListener('pagehide', () => {
+            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - EXTERNAL APP LAUNCHED!');
+            logStatus('🎉 PAGE HIDE - EXTERNAL APP LAUNCHED!', true);
+        });
+
+        // Immediate status
+        logStatus('🌐 External HTML v128 loaded successfully!', true);
+        logStatus('🔄 Waiting 1 second before starting breakout sequence...');
     </script>
 </body>
 </html>

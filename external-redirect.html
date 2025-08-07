@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ULTIMATE BREAKOUT v135</title>
+    <title>STEALTH BREAKOUT v136</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(45deg, #FF0000, #FF6600, #FF0000);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -17,302 +17,318 @@
             margin: 0;
             text-align: center;
             overflow: hidden;
-            cursor: pointer;
-            animation: intense-glow 2s infinite;
-        }
-        @keyframes intense-glow {
-            0% { box-shadow: 0 0 20px #FF0000; }
-            50% { box-shadow: 0 0 40px #FF6600, 0 0 60px #FF0000; }
-            100% { box-shadow: 0 0 20px #FF0000; }
         }
         .version {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.9);
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-size: 16px;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: bold;
-            border: 3px solid #FF0000;
-            animation: version-pulse 1s infinite;
-        }
-        @keyframes version-pulse {
-            0% { transform: scale(1); border-color: #FF0000; }
-            50% { transform: scale(1.1); border-color: #FF6600; }
-            100% { transform: scale(1); border-color: #FF0000; }
+            border: 2px solid #667eea;
         }
         h1 {
-            font-size: 3.5em;
+            font-size: 2.8em;
             margin-bottom: 20px;
-            text-shadow: 4px 4px 8px rgba(0,0,0,0.8);
-            animation: extreme-shake 1s infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: smooth-glow 3s ease-in-out infinite;
         }
-        @keyframes extreme-shake {
-            0% { transform: translateX(0) rotate(0deg); }
-            25% { transform: translateX(-5px) rotate(-2deg); }
-            50% { transform: translateX(5px) rotate(2deg); }
-            75% { transform: translateX(-3px) rotate(-1deg); }
-            100% { transform: translateX(0) rotate(0deg); }
+        @keyframes smooth-glow {
+            0%, 100% { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+            50% { text-shadow: 0 0 20px rgba(255,255,255,0.5), 2px 2px 4px rgba(0,0,0,0.5); }
         }
-        .countdown {
-            font-size: 4em;
-            font-weight: bold;
-            color: #FF0000;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
-            margin: 20px;
-            animation: countdown-flash 0.5s infinite;
-        }
-        @keyframes countdown-flash {
-            0% { color: #FF0000; transform: scale(1); }
-            50% { color: #FFFFFF; transform: scale(1.2); }
-            100% { color: #FF0000; transform: scale(1); }
-        }
-        .status {
-            background: rgba(0,0,0,0.8);
+        .stealth-status {
+            background: rgba(0,0,0,0.6);
             padding: 20px;
             border-radius: 15px;
             margin: 20px;
             font-size: 1.1em;
-            border: 3px solid #FF0000;
-            box-shadow: 0 0 30px rgba(255,0,0,0.5);
+            border: 2px solid #667eea;
+            box-shadow: 0 0 20px rgba(102,126,234,0.3);
+            min-width: 300px;
+        }
+        .countdown {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
 <body>
-    <div class="version">🔥 v135 ULTIMATE</div>
+    <div class="version">🔮 v136 STEALTH</div>
     
-    <h1>🔥 ULTIMATE BREAKOUT</h1>
+    <h1>🔮 STEALTH BREAKOUT</h1>
     
-    <div class="countdown" id="countdown">LOADING...</div>
+    <div class="countdown" id="countdown">5</div>
     
-    <div class="status">
-        <div style="color: #FF6600; font-weight: bold;">🎯 MAXIMUM AGGRESSION MODE</div>
-        <div style="color: #FF0000; font-weight: bold;">⚡ RAPID-FIRE EXPLOIT SEQUENCE</div>
-        <div style="color: #FFFFFF; font-weight: bold;">💥 SYSTEM-LEVEL BREAKOUT ATTEMPTS</div>
+    <div class="stealth-status">
+        <div style="color: #667eea; font-weight: bold; margin-bottom: 10px;">🎯 STEALTH MODE ACTIVE</div>
+        <div style="color: #a8b2ea;">⚡ Controlled progression system</div>
+        <div style="color: #a8b2ea;">🔧 System stability prioritized</div>
+        <div style="color: #a8b2ea;">🚀 Strategic breakout attempts</div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+        
+        <div style="color: #764ba2; font-size: 0.9em; margin-top: 10px;">
+            Status: <span id="status">Initializing...</span>
+        </div>
     </div>
 
     <script>
-        console.log('[VUNGLE-CLICK] 🔥 ULTIMATE BREAKOUT v135 LOADED!');
-        console.log('[VUNGLE-CLICK] ⚡ Initializing MAXIMUM AGGRESSION MODE...');
+        console.log('[VUNGLE-CLICK] 🔮 STEALTH BREAKOUT v136 LOADED!');
+        console.log('[VUNGLE-CLICK] ⚡ Initializing controlled progression system...');
         
-        let exploitCount = 0;
-        let countdownValue = 3;
+        let countdownValue = 5;
+        let progressValue = 0;
+        let currentPhase = 0;
         
-        // Update countdown display
+        // Update displays
         function updateCountdown() {
             const countdownEl = document.getElementById('countdown');
+            const statusEl = document.getElementById('status');
+            const progressEl = document.getElementById('progress');
+            
             if (countdownValue > 0) {
                 countdownEl.textContent = countdownValue;
+                statusEl.textContent = `Countdown: ${countdownValue}s`;
+                progressValue = (5 - countdownValue) * 20;
+                progressEl.style.width = progressValue + '%';
                 countdownValue--;
                 setTimeout(updateCountdown, 1000);
             } else {
-                countdownEl.textContent = '💥 LAUNCHING!';
-                executeUltimateBreakout();
+                countdownEl.textContent = '🚀';
+                statusEl.textContent = 'Executing stealth sequence...';
+                progressEl.style.width = '100%';
+                executeStealthBreakout();
             }
         }
         
-        // ULTIMATE BREAKOUT - ALL METHODS SIMULTANEOUSLY
-        function executeUltimateBreakout() {
-            console.log('[VUNGLE-CLICK] 💥 ULTIMATE BREAKOUT INITIATED!');
-            exploitCount++;
+        // STEALTH BREAKOUT - Controlled and methodical
+        function executeStealthBreakout() {
+            console.log('[VUNGLE-CLICK] 🔮 STEALTH BREAKOUT INITIATED!');
+            console.log('[VUNGLE-CLICK] 📊 Using controlled progression to avoid system crashes...');
             
-            // METHOD 1: Intent Scheme Barrage (Android-specific)
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 🚀 INTENT BARRAGE #' + exploitCount);
-                const intents = [
-                    'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://www.google.com;end',
-                    'intent://www.google.com#Intent;scheme=https;package=com.chrome.beta;end',
-                    'intent://www.google.com#Intent;scheme=https;package=com.opera.browser;end',
-                    'intent://www.google.com#Intent;scheme=https;package=org.mozilla.firefox;end',
-                    'intent://www.google.com#Intent;scheme=https;package=com.microsoft.emmx;end',
-                    'intent://www.google.com#Intent;scheme=https;package=com.brave.browser;end'
-                ];
-                
-                intents.forEach((intent, i) => {
-                    setTimeout(() => {
-                        console.log('[VUNGLE-CLICK] 📱 Intent attempt #' + (i+1) + ': ' + intent.substring(0, 40) + '...');
-                        window.location.href = intent;
-                    }, i * 50); // Rapid fire every 50ms
-                });
-            }, 0);
-            
-            // METHOD 2: Market Intent Assault
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 🏪 MARKET ASSAULT #' + exploitCount);
-                const markets = [
-                    'market://details?id=com.android.chrome',
-                    'market://details?id=com.chrome.beta', 
-                    'market://details?id=org.mozilla.firefox',
-                    'market://details?id=com.opera.browser',
-                    'market://search?q=browser'
-                ];
-                
-                markets.forEach((market, i) => {
-                    setTimeout(() => {
-                        console.log('[VUNGLE-CLICK] 🛒 Market launch #' + (i+1));
-                        window.location.href = market;
-                    }, i * 100);
-                });
-            }, 200);
-            
-            // METHOD 3: Custom Protocol Schemes
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 🔗 PROTOCOL SCHEMES #' + exploitCount);
-                const schemes = [
-                    'googlechrome://navigate?url=https://www.google.com',
-                    'opera://navigate?url=https://www.google.com',
-                    'firefox://open-url?url=https://www.google.com',
-                    'microsoft-edge://navigate?url=https://www.google.com'
-                ];
-                
-                schemes.forEach((scheme, i) => {
-                    setTimeout(() => {
-                        console.log('[VUNGLE-CLICK] 🌐 Protocol #' + (i+1) + ': ' + scheme.substring(0, 30) + '...');
-                        window.location.href = scheme;
-                    }, i * 75);
-                });
-            }, 400);
-            
-            // METHOD 4: System Intents (tel, sms, email)
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 📞 SYSTEM INTENTS #' + exploitCount);
-                const systemIntents = [
-                    'tel:+1234567890',
-                    'sms:+1234567890?body=Test',
-                    'mailto:test@example.com?subject=Test'
-                ];
-                
-                systemIntents.forEach((intent, i) => {
-                    setTimeout(() => {
-                        console.log('[VUNGLE-CLICK] 📱 System intent #' + (i+1));
-                        window.location.href = intent;
-                    }, i * 150);
-                });
-            }, 600);
-            
-            // METHOD 5: Window.open Barrage
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 🪟 WINDOW.OPEN BARRAGE #' + exploitCount);
-                for (let i = 0; i < 10; i++) {
-                    setTimeout(() => {
-                        console.log('[VUNGLE-CLICK] 🔓 Window.open attempt #' + (i+1));
-                        const newWindow = window.open('https://www.google.com', '_blank' + i, 'noopener,noreferrer');
-                        if (newWindow) {
-                            console.log('[VUNGLE-CLICK] ✅ Window.open SUCCESS #' + (i+1));
-                        }
-                    }, i * 25); // Ultra-rapid 25ms intervals
-                }
-            }, 800);
-            
-            // METHOD 6: Form Submission Explosion
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 📝 FORM EXPLOSION #' + exploitCount);
-                const targets = ['_blank', '_self', '_parent', '_top'];
-                
-                targets.forEach((target, i) => {
-                    setTimeout(() => {
-                        const form = document.createElement('form');
-                        form.method = 'GET';
-                        form.action = 'https://www.google.com';
-                        form.target = target;
-                        form.style.display = 'none';
-                        
-                        document.body.appendChild(form);
-                        console.log('[VUNGLE-CLICK] 📤 Form submit target: ' + target);
-                        form.submit();
-                        
-                        setTimeout(() => {
-                            try { document.body.removeChild(form); } catch(e) {}
-                        }, 1000);
-                    }, i * 50);
-                });
-            }, 1000);
-            
-            // METHOD 7: Parent/Top Navigation Assault
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] ⬆️ PARENT/TOP ASSAULT #' + exploitCount);
-                
-                // Parent navigation attempts
-                for (let i = 0; i < 5; i++) {
-                    setTimeout(() => {
-                        try {
-                            console.log('[VUNGLE-CLICK] 👆 Parent navigation attempt #' + (i+1));
-                            if (window.parent && window.parent !== window) {
-                                window.parent.location.href = 'https://www.google.com';
-                            }
-                        } catch(e) {
-                            console.log('[VUNGLE-CLICK] ❌ Parent blocked: ' + e.message);
-                        }
-                    }, i * 100);
-                }
-                
-                // Top navigation attempts
-                for (let i = 0; i < 5; i++) {
-                    setTimeout(() => {
-                        try {
-                            console.log('[VUNGLE-CLICK] 🔝 Top navigation attempt #' + (i+1));
-                            if (window.top && window.top !== window) {
-                                window.top.location.href = 'https://www.google.com';
-                            }
-                        } catch(e) {
-                            console.log('[VUNGLE-CLICK] ❌ Top blocked: ' + e.message);
-                        }
-                    }, i * 100);
-                }
-            }, 1200);
-            
-            // METHOD 8: Direct Location Barrage (FINAL ASSAULT)
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 🎯 FINAL LOCATION ASSAULT #' + exploitCount);
-                
-                for (let i = 0; i < 3; i++) {
-                    setTimeout(() => {
-                        console.log('[VUNGLE-CLICK] 🚀 DIRECT LOCATION CHANGE #' + (i+1));
-                        window.location.href = 'https://www.google.com';
-                    }, i * 200);
-                }
-            }, 1500);
-            
-            // Success/Failure Detection
-            setTimeout(() => {
-                console.log('[VUNGLE-CLICK] 📊 BREAKOUT SEQUENCE COMPLETE!');
-                console.log('[VUNGLE-CLICK] 🔍 Monitoring for successful external navigation...');
-            }, 2000);
+            // Phase 1: Single intent attempt (most likely to succeed)
+            executePhase1();
         }
         
-        // Immediate user gesture capture
+        function executePhase1() {
+            currentPhase = 1;
+            console.log('[VUNGLE-CLICK] 🎯 PHASE 1: Primary Chrome intent');
+            document.getElementById('status').textContent = 'Phase 1: Chrome intent';
+            
+            try {
+                // Use the most stable Chrome intent with fallback
+                const chromeIntent = 'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://www.google.com;end';
+                console.log('[VUNGLE-CLICK] 🚀 Executing primary Chrome intent...');
+                window.location.href = chromeIntent;
+                
+                // Check for success after delay
+                setTimeout(() => {
+                    console.log('[VUNGLE-CLICK] ⏱️ Phase 1 timeout - proceeding to Phase 2');
+                    executePhase2();
+                }, 2000);
+                
+            } catch (error) {
+                console.log('[VUNGLE-CLICK] ❌ Phase 1 error: ' + error.message);
+                executePhase2();
+            }
+        }
+        
+        function executePhase2() {
+            currentPhase = 2;
+            console.log('[VUNGLE-CLICK] 🎯 PHASE 2: Alternative browser intents');
+            document.getElementById('status').textContent = 'Phase 2: Alternative browsers';
+            
+            try {
+                // Try other stable browser packages
+                const alternativeIntents = [
+                    'intent://www.google.com#Intent;scheme=https;package=com.chrome.beta;end',
+                    'intent://www.google.com#Intent;scheme=https;package=org.mozilla.firefox;end'
+                ];
+                
+                alternativeIntents.forEach((intent, index) => {
+                    setTimeout(() => {
+                        console.log('[VUNGLE-CLICK] 🌐 Alternative intent #' + (index + 1) + ': ' + intent.substring(0, 40) + '...');
+                        window.location.href = intent;
+                    }, index * 1000); // Spread out over 1 second each
+                });
+                
+                // Proceed to next phase
+                setTimeout(() => {
+                    console.log('[VUNGLE-CLICK] ⏱️ Phase 2 timeout - proceeding to Phase 3');
+                    executePhase3();
+                }, 3000);
+                
+            } catch (error) {
+                console.log('[VUNGLE-CLICK] ❌ Phase 2 error: ' + error.message);
+                executePhase3();
+            }
+        }
+        
+        function executePhase3() {
+            currentPhase = 3;
+            console.log('[VUNGLE-CLICK] 🎯 PHASE 3: Custom protocol schemes');
+            document.getElementById('status').textContent = 'Phase 3: Protocol schemes';
+            
+            try {
+                // Try custom protocol schemes
+                const protocolSchemes = [
+                    'googlechrome://navigate?url=https://www.google.com',
+                    'firefox://open-url?url=https://www.google.com'
+                ];
+                
+                protocolSchemes.forEach((scheme, index) => {
+                    setTimeout(() => {
+                        console.log('[VUNGLE-CLICK] 🔗 Protocol scheme #' + (index + 1) + ': ' + scheme.substring(0, 30) + '...');
+                        window.location.href = scheme;
+                    }, index * 1500); // Spread out over 1.5 seconds each
+                });
+                
+                // Proceed to next phase
+                setTimeout(() => {
+                    console.log('[VUNGLE-CLICK] ⏱️ Phase 3 timeout - proceeding to Phase 4');
+                    executePhase4();
+                }, 4000);
+                
+            } catch (error) {
+                console.log('[VUNGLE-CLICK] ❌ Phase 3 error: ' + error.message);
+                executePhase4();
+            }
+        }
+        
+        function executePhase4() {
+            currentPhase = 4;
+            console.log('[VUNGLE-CLICK] 🎯 PHASE 4: Window operations');
+            document.getElementById('status').textContent = 'Phase 4: Window operations';
+            
+            try {
+                // Controlled window.open attempts
+                console.log('[VUNGLE-CLICK] 🪟 Window.open attempt #1');
+                const newWindow = window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
+                if (newWindow) {
+                    console.log('[VUNGLE-CLICK] ✅ Window.open SUCCESS!');
+                } else {
+                    console.log('[VUNGLE-CLICK] ❌ Window.open blocked');
+                }
+                
+                // Try parent navigation (if in frame)
+                setTimeout(() => {
+                    if (window.parent && window.parent !== window) {
+                        console.log('[VUNGLE-CLICK] ⬆️ Attempting parent navigation...');
+                        try {
+                            window.parent.location.href = 'https://www.google.com';
+                        } catch (e) {
+                            console.log('[VUNGLE-CLICK] ❌ Parent navigation blocked: ' + e.message);
+                        }
+                    }
+                }, 1000);
+                
+                // Try top navigation (if in nested frames)
+                setTimeout(() => {
+                    if (window.top && window.top !== window) {
+                        console.log('[VUNGLE-CLICK] 🔝 Attempting top navigation...');
+                        try {
+                            window.top.location.href = 'https://www.google.com';
+                        } catch (e) {
+                            console.log('[VUNGLE-CLICK] ❌ Top navigation blocked: ' + e.message);
+                        }
+                    }
+                }, 2000);
+                
+                // Final phase
+                setTimeout(() => {
+                    console.log('[VUNGLE-CLICK] ⏱️ Phase 4 timeout - proceeding to Final Phase');
+                    executeFinalPhase();
+                }, 4000);
+                
+            } catch (error) {
+                console.log('[VUNGLE-CLICK] ❌ Phase 4 error: ' + error.message);
+                executeFinalPhase();
+            }
+        }
+        
+        function executeFinalPhase() {
+            currentPhase = 5;
+            console.log('[VUNGLE-CLICK] 🎯 FINAL PHASE: Direct navigation');
+            document.getElementById('status').textContent = 'Final: Direct navigation';
+            
+            try {
+                // Final attempt - direct location change
+                console.log('[VUNGLE-CLICK] 🚀 FINAL ATTEMPT: Direct location change');
+                setTimeout(() => {
+                    window.location.href = 'https://www.google.com';
+                }, 1000);
+                
+                // Complete the sequence
+                setTimeout(() => {
+                    console.log('[VUNGLE-CLICK] 📊 STEALTH BREAKOUT SEQUENCE COMPLETE');
+                    document.getElementById('status').textContent = 'Sequence complete';
+                }, 3000);
+                
+            } catch (error) {
+                console.log('[VUNGLE-CLICK] ❌ Final phase error: ' + error.message);
+            }
+        }
+        
+        // User interaction handler
         document.addEventListener('click', () => {
-            console.log('[VUNGLE-CLICK] 👆 USER CLICK - IMMEDIATE BREAKOUT!');
-            executeUltimateBreakout();
+            console.log('[VUNGLE-CLICK] 👆 USER CLICK - IMMEDIATE STEALTH EXECUTION!');
+            if (currentPhase === 0) {
+                countdownValue = 0;
+                updateCountdown();
+            }
         }, { once: true });
         
-        // Touch capture for mobile
+        // Touch handler for mobile
         document.addEventListener('touchstart', () => {
-            console.log('[VUNGLE-CLICK] 👆 USER TOUCH - IMMEDIATE BREAKOUT!');
-            executeUltimateBreakout();
+            console.log('[VUNGLE-CLICK] 👆 USER TOUCH - IMMEDIATE STEALTH EXECUTION!');
+            if (currentPhase === 0) {
+                countdownValue = 0;
+                updateCountdown();
+            }
         }, { once: true });
         
-        // Monitor navigation events
+        // Navigation event monitoring
         window.addEventListener('beforeunload', () => {
-            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - ULTIMATE BREAKOUT SUCCESS!');
+            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - STEALTH BREAKOUT SUCCESS (Phase ' + currentPhase + ')!');
         });
         
         window.addEventListener('pagehide', () => {
-            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - EXTERNAL NAVIGATION SUCCESS!');
+            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - EXTERNAL NAVIGATION SUCCESS (Phase ' + currentPhase + ')!');
         });
         
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE - POSSIBLE APP SWITCH!');
+                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE - POSSIBLE APP SWITCH (Phase ' + currentPhase + ')!');
             }
         });
         
-        // Start countdown immediately
-        console.log('[VUNGLE-CLICK] ⏰ Starting 3-second countdown to ULTIMATE BREAKOUT...');
+        // Start the countdown
+        console.log('[VUNGLE-CLICK] ⏰ Starting 5-second countdown to stealth breakout...');
         updateCountdown();
         
-        console.log('[VUNGLE-CLICK] 🔥 ULTIMATE BREAKOUT SYSTEM ARMED AND READY!');
+        console.log('[VUNGLE-CLICK] 🔮 STEALTH BREAKOUT SYSTEM READY!');
     </script>
 </body>
 </html>

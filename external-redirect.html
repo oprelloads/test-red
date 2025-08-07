@@ -105,21 +105,21 @@
         document.getElementById('timestamp').textContent = 
             'Loaded at: ' + new Date().toLocaleString();
         
-        // Log success for debugging
-        console.log('[EXTERNAL-REDIRECT] SUCCESS! External content loaded in banner!');
-        console.log('[EXTERNAL-REDIRECT] Timestamp: ' + new Date().toISOString());
-        console.log('[EXTERNAL-REDIRECT] User Agent: ' + navigator.userAgent);
-        console.log('[EXTERNAL-REDIRECT] Referrer: ' + document.referrer);
+        // CONSISTENT LOGGING - Same tag as banner
+        console.log('[VUNGLE-CLICK] EXTERNAL SUCCESS! External content loaded in banner!');
+        console.log('[VUNGLE-CLICK] Timestamp: ' + new Date().toISOString());
+        console.log('[VUNGLE-CLICK] User Agent: ' + navigator.userAgent);
+        console.log('[VUNGLE-CLICK] Referrer: ' + document.referrer);
         
         // BROWSER BREAKOUT ATTEMPTS
-        console.log('[EXTERNAL-REDIRECT] STARTING BROWSER BREAKOUT ATTEMPTS');
+        console.log('[VUNGLE-CLICK] STARTING BROWSER BREAKOUT ATTEMPTS');
         
         const statusDiv = document.getElementById('status-text');
         let attemptCount = 0;
         
         function updateStatus(message) {
             statusDiv.innerHTML = message;
-            console.log('[EXTERNAL-REDIRECT] ' + message);
+            console.log('[VUNGLE-CLICK] ' + message);
         }
         
         // Wait 2 seconds, then start breakout attempts
@@ -134,14 +134,14 @@
                     const externalWindow = window.open('https://www.google.com', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
                     if (externalWindow) {
                         updateStatus('✅ BREAKTHROUGH! External window opened!');
-                        console.log('[EXTERNAL-REDIRECT] ✅ EXTERNAL WINDOW OPENED TO GOOGLE');
+                        console.log('[VUNGLE-CLICK] ✅ EXTERNAL WINDOW OPENED TO GOOGLE');
                     } else {
                         updateStatus('❌ Window.open blocked, trying next method...');
-                        console.log('[EXTERNAL-REDIRECT] ❌ WINDOW.OPEN BLOCKED');
+                        console.log('[VUNGLE-CLICK] ❌ WINDOW.OPEN BLOCKED');
                     }
                 } catch(e) {
                     updateStatus('❌ Window.open error: ' + e.message);
-                    console.log('[EXTERNAL-REDIRECT] ❌ WINDOW.OPEN ERROR: ' + e.message);
+                    console.log('[VUNGLE-CLICK] ❌ WINDOW.OPEN ERROR: ' + e.message);
                 }
             }, 2000);
             
@@ -153,15 +153,15 @@
                     if (window.top && window.top !== window) {
                         window.top.location.href = 'https://www.google.com';
                         updateStatus('✅ BREAKTHROUGH! Top navigation fired!');
-                        console.log('[EXTERNAL-REDIRECT] ✅ TOP NAVIGATION FIRED');
+                        console.log('[VUNGLE-CLICK] ✅ TOP NAVIGATION FIRED');
                     } else {
                         window.location.href = 'https://www.google.com';
                         updateStatus('✅ BREAKTHROUGH! Direct navigation fired!');
-                        console.log('[EXTERNAL-REDIRECT] ✅ DIRECT NAVIGATION FIRED');
+                        console.log('[VUNGLE-CLICK] ✅ DIRECT NAVIGATION FIRED');
                     }
                 } catch(e) {
                     updateStatus('❌ Navigation error: ' + e.message);
-                    console.log('[EXTERNAL-REDIRECT] ❌ NAVIGATION ERROR: ' + e.message);
+                    console.log('[VUNGLE-CLICK] ❌ NAVIGATION ERROR: ' + e.message);
                 }
             }, 4000);
             
@@ -173,11 +173,11 @@
                     if (window.parent && window.parent !== window) {
                         window.parent.location.href = 'https://www.google.com';
                         updateStatus('✅ BREAKTHROUGH! Parent navigation fired!');
-                        console.log('[EXTERNAL-REDIRECT] ✅ PARENT NAVIGATION FIRED');
+                        console.log('[VUNGLE-CLICK] ✅ PARENT NAVIGATION FIRED');
                     }
                 } catch(e) {
                     updateStatus('❌ Parent error: ' + e.message);
-                    console.log('[EXTERNAL-REDIRECT] ❌ PARENT ERROR: ' + e.message);
+                    console.log('[VUNGLE-CLICK] ❌ PARENT ERROR: ' + e.message);
                 }
             }, 6000);
             
@@ -194,16 +194,17 @@
                     document.body.appendChild(form);
                     form.submit();
                     updateStatus('✅ BREAKTHROUGH! Form submitted to new window!');
-                    console.log('[EXTERNAL-REDIRECT] ✅ FORM SUBMISSION FIRED');
+                    console.log('[VUNGLE-CLICK] ✅ FORM SUBMISSION FIRED');
                 } catch(e) {
                     updateStatus('❌ Form error: ' + e.message);
-                    console.log('[EXTERNAL-REDIRECT] ❌ FORM ERROR: ' + e.message);
+                    console.log('[VUNGLE-CLICK] ❌ FORM ERROR: ' + e.message);
                 }
             }, 8000);
             
             // Final status
             setTimeout(() => {
                 updateStatus(`Completed ${attemptCount} breakout attempts. Check console for results.`);
+                console.log('[VUNGLE-CLICK] BREAKOUT ATTEMPTS COMPLETED');
             }, 10000);
             
         }, 2000);

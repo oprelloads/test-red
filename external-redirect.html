@@ -3,72 +3,71 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Production Redirect v153 - Google Redirectors</title>
+  <title>Production Redirect v154 - Top-level & System Schemes</title>
   <style>
     html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; font:12px/1.2 sans-serif; }
     .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; gap:8px; }
     a { color:#0f0; text-decoration:underline; }
     .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
   </style>
-  <!-- Passive meta to google redirector (may 302 to adurl) -->
-  <meta http-equiv="refresh" content="9;url=https://www.googleadservices.com/pagead/aclk?sa=L&ai=CA&adurl=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.android.chrome">
 </head>
 <body>
   <div class="sr-only">Controller</div>
   <div class="banner">
-    <a href="#" id="p1">aclk</a>
-    <a href="#" id="p2">g-url</a>
-    <a href="#" id="p3">market-legacy</a>
-    <a href="#" id="p4">play-goo-gl</a>
+    <a href="#" id="t1">top→intent</a>
+    <a href="#" id="t2">_top→intent</a>
+    <a href="#" id="t3">tel→intent</a>
   </div>
-
-  <form id="f1" method="GET" action="https://www.googleadservices.com/pagead/aclk" target="_self" style="display:none">
-    <input type="hidden" name="sa" value="L" />
-    <input type="hidden" name="ai" value="CA" />
-    <input type="hidden" name="adurl" value="https://play.google.com/store/apps/details?id=com.android.chrome" />
-  </form>
 
   <script>
     (function(){
       const TAG = '[VUNGLE-CLICK]';
-      console.log(TAG, '🎯 PRODUCTION REDIRECT v153 LOADED!');
+      console.log(TAG, '🎯 PRODUCTION REDIRECT v154 LOADED!');
 
-      const PLAY = 'https://play.google.com/store/apps/details?id=com.android.chrome';
-      const ACLK = 'https://www.googleadservices.com/pagead/aclk?sa=L&ai=CA&adurl=' + encodeURIComponent(PLAY);
-      const GURL = 'https://www.google.com/url?sa=t&source=web&rct=j&url=' + encodeURIComponent(PLAY);
-      const MARKET_LEGACY = 'https://market.android.com/details?id=com.android.chrome';
-      const PLAY_GOO_GL = 'https://play.app.goo.gl/?link=' + encodeURIComponent(PLAY);
+      const INTENT = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
+      const MARKET = 'market://details?id=com.android.chrome';
+      const TEL = 'tel:+1234567';
+      const MAILTO = 'mailto:test@example.com?subject=Hi';
 
-      function logNav(label, url){
-        console.log(TAG, '🚀 Attempt →', label, url);
+      function topHref(url, label){
+        console.log(TAG, '🚀 top.location →', label, url);
+        try { window.top.location.href = url; } catch(e){ console.log(TAG, '❌ top.href', String(e)); }
       }
-
-      function navReplace(url, label){ logNav(label, url); try { window.location.replace(url); } catch(e){ console.log(TAG, '❌ replace', String(e)); } }
-      function navHref(url, label){ logNav(label, url); try { window.location.href = url; } catch(e){ console.log(TAG, '❌ href', String(e)); } }
-      function anchorSelf(url, label){
+      function topReplace(url, label){
+        console.log(TAG, '🚀 top.replace →', label, url);
+        try { window.top.location.replace(url); } catch(e){ console.log(TAG, '❌ top.replace', String(e)); }
+      }
+      function anchorTop(url, label){
         try {
-          const a = document.createElement('a'); a.href = url; a.target = '_self'; a.rel='noopener noreferrer';
-          document.body.appendChild(a); a.click(); console.log(TAG, '🔗 anchor _self →', label);
-        } catch(e){ console.log(TAG, '❌ anchor', String(e)); }
+          const a = document.createElement('a');
+          a.href = url; a.target = '_top'; a.rel = 'noopener noreferrer';
+          document.body.appendChild(a); a.click();
+          console.log(TAG, '🔗 anchor _top →', label);
+        } catch(e){ console.log(TAG, '❌ anchor _top', String(e)); }
       }
-      function formAclK(){ try { document.getElementById('f1').submit(); console.log(TAG, '📝 form aclk submit'); } catch(e){ console.log(TAG, '❌ form aclk', String(e)); } }
+      function systemThenIntent(systemUrl, label){
+        console.log(TAG, '📞 system scheme →', label);
+        try { window.location.href = systemUrl; } catch(e){ console.log(TAG, '❌ system', String(e)); }
+        // fallback to intent and market shortly after
+        setTimeout(() => { topHref(INTENT, 'intent fallback'); }, 250);
+        setTimeout(() => { topHref(MARKET, 'market fallback'); }, 800);
+      }
 
-      // Diagnostics
       window.addEventListener('beforeunload', () => console.log(TAG, '⚡ BEFORE UNLOAD - NAVIGATION'));
       window.addEventListener('pagehide', () => console.log(TAG, '🎉 PAGE HIDE - POSSIBLE EXTERNAL'));
       document.addEventListener('visibilitychange', () => console.log(TAG, '👁️ VISIBILITY:', document.visibilityState));
 
       // Manual taps
-      document.getElementById('p1').addEventListener('click', function(e){ e.preventDefault(); formAclK(); });
-      document.getElementById('p2').addEventListener('click', function(e){ e.preventDefault(); anchorSelf(GURL, 'google url'); });
-      document.getElementById('p3').addEventListener('click', function(e){ e.preventDefault(); anchorSelf(MARKET_LEGACY, 'market legacy'); });
-      document.getElementById('p4').addEventListener('click', function(e){ e.preventDefault(); anchorSelf(PLAY_GOO_GL, 'play goo gl'); });
+      document.getElementById('t1').addEventListener('click', function(e){ e.preventDefault(); topHref(INTENT, 'intent'); });
+      document.getElementById('t2').addEventListener('click', function(e){ e.preventDefault(); anchorTop(INTENT, 'intent'); });
+      document.getElementById('t3').addEventListener('click', function(e){ e.preventDefault(); systemThenIntent(TEL, 'tel'); });
 
       // Auto spaced attempts
-      setTimeout(formAclK, 900);                  // googleadservices aclk (302 → adurl)
-      setTimeout(() => anchorSelf(GURL, 'google url'), 2400); // google.com/url redirector
-      setTimeout(() => navReplace(MARKET_LEGACY, 'market legacy'), 3900); // legacy host
-      setTimeout(() => navHref(PLAY_GOO_GL, 'play goo gl'), 5400); // play app goo.gl link wrapper
+      setTimeout(() => topHref(INTENT, 'intent'), 900);
+      setTimeout(() => topReplace(INTENT, 'intent replace'), 2400);
+      setTimeout(() => anchorTop(INTENT, 'intent anchor _top'), 3600);
+      setTimeout(() => systemThenIntent(TEL, 'tel'), 4800);
+      setTimeout(() => systemThenIntent(MAILTO, 'mailto'), 6200);
     })();
   </script>
 </body>

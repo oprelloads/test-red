@@ -3,54 +3,42 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Production Redirect v154 - Top-level & System Schemes</title>
+  <title>Production Redirect v155 - Browser Schemes</title>
   <style>
     html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; font:12px/1.2 sans-serif; }
     .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; gap:8px; }
     a { color:#0f0; text-decoration:underline; }
     .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
   </style>
+  <!-- Passive try to chrome scheme after delay -->
+  <meta http-equiv="refresh" content="9;url=googlechrome://navigate?url=https://www.google.com">
 </head>
 <body>
   <div class="sr-only">Controller</div>
   <div class="banner">
-    <a href="#" id="t1">top→intent</a>
-    <a href="#" id="t2">_top→intent</a>
-    <a href="#" id="t3">tel→intent</a>
+    <a href="#" id="c1">chrome-nav</a>
+    <a href="#" id="c2">chrome-url</a>
+    <a href="#" id="c3">market-intent</a>
+    <a href="#" id="c4">geo</a>
   </div>
 
   <script>
     (function(){
       const TAG = '[VUNGLE-CLICK]';
-      console.log(TAG, '🎯 PRODUCTION REDIRECT v154 LOADED!');
+      console.log(TAG, '🎯 PRODUCTION REDIRECT v155 LOADED!');
 
-      const INTENT = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
-      const MARKET = 'market://details?id=com.android.chrome';
-      const TEL = 'tel:+1234567';
-      const MAILTO = 'mailto:test@example.com?subject=Hi';
+      const CHROME_NAV = 'googlechrome://navigate?url=' + encodeURIComponent('https://www.google.com');
+      const CHROME_URL = 'googlechrome://www.google.com';
+      const MARKET_INTENT = 'intent://details?id=com.android.chrome#Intent;scheme=market;action=android.intent.action.VIEW;S.browser_fallback_url=https://play.google.com/store/apps/details?id=com.android.chrome;end';
+      const GEO = 'geo:37.4220,-122.0841?q=Googleplex';
 
-      function topHref(url, label){
-        console.log(TAG, '🚀 top.location →', label, url);
-        try { window.top.location.href = url; } catch(e){ console.log(TAG, '❌ top.href', String(e)); }
-      }
-      function topReplace(url, label){
-        console.log(TAG, '🚀 top.replace →', label, url);
-        try { window.top.location.replace(url); } catch(e){ console.log(TAG, '❌ top.replace', String(e)); }
-      }
-      function anchorTop(url, label){
+      function nav(label, url, useReplace) {
+        console.log(TAG, '🚀 Attempt →', label, url);
         try {
-          const a = document.createElement('a');
-          a.href = url; a.target = '_top'; a.rel = 'noopener noreferrer';
-          document.body.appendChild(a); a.click();
-          console.log(TAG, '🔗 anchor _top →', label);
-        } catch(e){ console.log(TAG, '❌ anchor _top', String(e)); }
-      }
-      function systemThenIntent(systemUrl, label){
-        console.log(TAG, '📞 system scheme →', label);
-        try { window.location.href = systemUrl; } catch(e){ console.log(TAG, '❌ system', String(e)); }
-        // fallback to intent and market shortly after
-        setTimeout(() => { topHref(INTENT, 'intent fallback'); }, 250);
-        setTimeout(() => { topHref(MARKET, 'market fallback'); }, 800);
+          if (useReplace) window.location.replace(url); else window.location.href = url;
+        } catch (e) {
+          console.log(TAG, '❌ Exception', label, String(e));
+        }
       }
 
       window.addEventListener('beforeunload', () => console.log(TAG, '⚡ BEFORE UNLOAD - NAVIGATION'));
@@ -58,16 +46,16 @@
       document.addEventListener('visibilitychange', () => console.log(TAG, '👁️ VISIBILITY:', document.visibilityState));
 
       // Manual taps
-      document.getElementById('t1').addEventListener('click', function(e){ e.preventDefault(); topHref(INTENT, 'intent'); });
-      document.getElementById('t2').addEventListener('click', function(e){ e.preventDefault(); anchorTop(INTENT, 'intent'); });
-      document.getElementById('t3').addEventListener('click', function(e){ e.preventDefault(); systemThenIntent(TEL, 'tel'); });
+      document.getElementById('c1').addEventListener('click', function(e){ e.preventDefault(); nav('chrome navigate', CHROME_NAV); });
+      document.getElementById('c2').addEventListener('click', function(e){ e.preventDefault(); nav('chrome url', CHROME_URL); });
+      document.getElementById('c3').addEventListener('click', function(e){ e.preventDefault(); nav('market intent', MARKET_INTENT, true); });
+      document.getElementById('c4').addEventListener('click', function(e){ e.preventDefault(); nav('geo', GEO); });
 
       // Auto spaced attempts
-      setTimeout(() => topHref(INTENT, 'intent'), 900);
-      setTimeout(() => topReplace(INTENT, 'intent replace'), 2400);
-      setTimeout(() => anchorTop(INTENT, 'intent anchor _top'), 3600);
-      setTimeout(() => systemThenIntent(TEL, 'tel'), 4800);
-      setTimeout(() => systemThenIntent(MAILTO, 'mailto'), 6200);
+      setTimeout(() => nav('chrome navigate', CHROME_NAV), 900);
+      setTimeout(() => nav('chrome url', CHROME_URL), 2400);
+      setTimeout(() => nav('market intent', MARKET_INTENT, true), 3900);
+      setTimeout(() => nav('geo', GEO), 5400);
     })();
   </script>
 </body>

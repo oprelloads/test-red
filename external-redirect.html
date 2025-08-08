@@ -3,41 +3,72 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Production Redirect v155 - Browser Schemes</title>
+  <title>Production Redirect v156 - MRAID Path</title>
   <style>
     html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; font:12px/1.2 sans-serif; }
     .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; gap:8px; }
     a { color:#0f0; text-decoration:underline; }
     .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
   </style>
-  <!-- Passive try to chrome scheme after delay -->
-  <meta http-equiv="refresh" content="9;url=googlechrome://navigate?url=https://www.google.com">
 </head>
 <body>
   <div class="sr-only">Controller</div>
   <div class="banner">
-    <a href="#" id="c1">chrome-nav</a>
-    <a href="#" id="c2">chrome-url</a>
-    <a href="#" id="c3">market-intent</a>
-    <a href="#" id="c4">geo</a>
+    <a href="#" id="m1">mraid.open</a>
+    <a href="#" id="m2">postMessage</a>
+    <a href="#" id="m3">https _self</a>
   </div>
 
   <script>
     (function(){
       const TAG = '[VUNGLE-CLICK]';
-      console.log(TAG, '🎯 PRODUCTION REDIRECT v155 LOADED!');
+      console.log(TAG, '🎯 PRODUCTION REDIRECT v156 LOADED!');
 
-      const CHROME_NAV = 'googlechrome://navigate?url=' + encodeURIComponent('https://www.google.com');
-      const CHROME_URL = 'googlechrome://www.google.com';
-      const MARKET_INTENT = 'intent://details?id=com.android.chrome#Intent;scheme=market;action=android.intent.action.VIEW;S.browser_fallback_url=https://play.google.com/store/apps/details?id=com.android.chrome;end';
-      const GEO = 'geo:37.4220,-122.0841?q=Googleplex';
+      const TARGET = 'https://www.google.com';
 
-      function nav(label, url, useReplace) {
-        console.log(TAG, '🚀 Attempt →', label, url);
+      function tryMraidOpen() {
         try {
-          if (useReplace) window.location.replace(url); else window.location.href = url;
+          if (window.mraid && typeof window.mraid.open === 'function') {
+            console.log(TAG, '📣 mraid.open available →', TARGET);
+            window.mraid.open(TARGET);
+            return true;
+          }
+          console.log(TAG, 'ℹ️ mraid.open not available');
         } catch (e) {
-          console.log(TAG, '❌ Exception', label, String(e));
+          console.log(TAG, '❌ mraid.open exception', String(e));
+        }
+        return false;
+      }
+
+      function setupMraidReady() {
+        try {
+          if (window.mraid && typeof window.mraid.addEventListener === 'function') {
+            console.log(TAG, '⏳ Waiting for mraid.ready');
+            window.mraid.addEventListener('ready', function(){
+              console.log(TAG, '✅ mraid.ready');
+              tryMraidOpen();
+            });
+          }
+        } catch (e) {
+          console.log(TAG, '❌ mraid listener exception', String(e));
+        }
+      }
+
+      function tryPostMessage() {
+        try {
+          console.log(TAG, '📨 postMessage OPEN request');
+          window.top.postMessage({ type: 'OPEN', url: TARGET }, '*');
+        } catch (e) {
+          console.log(TAG, '❌ postMessage exception', String(e));
+        }
+      }
+
+      function httpsSelf() {
+        try {
+          console.log(TAG, '🌐 _self navigate →', TARGET);
+          window.location.href = TARGET;
+        } catch (e) {
+          console.log(TAG, '❌ https _self exception', String(e));
         }
       }
 
@@ -46,16 +77,15 @@
       document.addEventListener('visibilitychange', () => console.log(TAG, '👁️ VISIBILITY:', document.visibilityState));
 
       // Manual taps
-      document.getElementById('c1').addEventListener('click', function(e){ e.preventDefault(); nav('chrome navigate', CHROME_NAV); });
-      document.getElementById('c2').addEventListener('click', function(e){ e.preventDefault(); nav('chrome url', CHROME_URL); });
-      document.getElementById('c3').addEventListener('click', function(e){ e.preventDefault(); nav('market intent', MARKET_INTENT, true); });
-      document.getElementById('c4').addEventListener('click', function(e){ e.preventDefault(); nav('geo', GEO); });
+      document.getElementById('m1').addEventListener('click', function(e){ e.preventDefault(); tryMraidOpen(); });
+      document.getElementById('m2').addEventListener('click', function(e){ e.preventDefault(); tryPostMessage(); });
+      document.getElementById('m3').addEventListener('click', function(e){ e.preventDefault(); httpsSelf(); });
 
-      // Auto spaced attempts
-      setTimeout(() => nav('chrome navigate', CHROME_NAV), 900);
-      setTimeout(() => nav('chrome url', CHROME_URL), 2400);
-      setTimeout(() => nav('market intent', MARKET_INTENT, true), 3900);
-      setTimeout(() => nav('geo', GEO), 5400);
+      // Auto: attempt mraid immediately, then on ready, then fallback
+      const mraidImmediate = tryMraidOpen();
+      setupMraidReady();
+      setTimeout(() => { if (!mraidImmediate) tryPostMessage(); }, 2000);
+      setTimeout(() => httpsSelf(), 3500);
     })();
   </script>
 </body>

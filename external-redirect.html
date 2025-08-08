@@ -3,72 +3,62 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Production Redirect v150</title>
+  <title>Production Redirect v151 - Play Store HTTPS</title>
   <style>
-    html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; }
-    .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; font:12px/1.2 sans-serif; }
-    .row { display:flex; gap:8px; }
+    html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; font:12px/1.2 sans-serif; }
+    .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; gap:8px; }
     a { color:#0f0; text-decoration:underline; }
     .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
   </style>
-  <!-- Passive meta refresh attempt using MRAID scheme (some SDKs intercept) -->
-  <meta http-equiv="refresh" content="9;url=mraid://open?url=intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end">
+  <!-- Passive meta refresh to Play Store domain (some SDKs force external for store hosts) -->
+  <meta http-equiv="refresh" content="7;url=https://play.google.com/store/apps/details?id=com.android.chrome">
 </head>
 <body>
   <div class="sr-only">Controller</div>
   <div class="banner">
-    <div class="row">
-      <a href="#" id="tap1">mraid→market</a>
-      <a href="#" id="tap2">mraid→intent</a>
-      <a href="#" id="tap3">_blank</a>
-    </div>
+    <a href="#" id="a1">form→store</a>
+    <a href="#" id="a2">anchor→store</a>
+    <a href="#" id="a3">replace→store</a>
   </div>
+
+  <form id="f" method="GET" action="https://play.google.com/store/apps/details" target="_self" style="display:none">
+    <input type="hidden" name="id" value="com.android.chrome" />
+  </form>
 
   <script>
     (function(){
       const TAG = '[VUNGLE-CLICK]';
-      console.log(TAG, '🎯 PRODUCTION REDIRECT v150 LOADED!');
+      const STORE = 'https://play.google.com/store/apps/details?id=com.android.chrome';
+      console.log(TAG, '🎯 PRODUCTION REDIRECT v151 LOADED!');
 
-      const INTENT = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
-      const MARKET = 'market://details?id=com.android.chrome';
-      
-      function tryNav(url, label){
-        console.log(TAG, '🚀 Attempt →', label, url);
-        try { window.location.href = url; } catch(e){ console.log(TAG, '❌', label, String(e)); }
+      function tryForm(){
+        try { document.getElementById('f').submit(); console.log(TAG, '📝 Form submit → store'); } catch(e) { console.log(TAG, '❌ Form submit', String(e)); }
+      }
+      function tryAnchor(){
+        try {
+          const a = document.createElement('a');
+          a.href = STORE; a.target = '_self'; a.rel = 'noopener noreferrer';
+          a.click();
+          console.log(TAG, '🔗 Programmatic anchor click → store');
+        } catch(e) { console.log(TAG, '❌ Anchor click', String(e)); }
+      }
+      function tryReplace(){
+        try { window.location.replace(STORE); console.log(TAG, '🔁 location.replace → store'); } catch(e) { console.log(TAG, '❌ replace', String(e)); }
       }
 
-      function tryMraidOpen(targetUrl, label){
-        const mraidUrl = 'mraid://open?url=' + encodeURIComponent(targetUrl);
-        tryNav(mraidUrl, 'mraid.open ' + label);
-      }
-
-      // Visibility diagnostics
-      window.addEventListener('beforeunload', () => console.log(TAG, '⚡ BEFORE UNLOAD - NAVIGATION TRIGGERED'));
-      window.addEventListener('pagehide', () => console.log(TAG, '🎉 PAGE HIDE - POSSIBLE EXTERNAL LAUNCH'));
+      window.addEventListener('beforeunload', () => console.log(TAG, '⚡ BEFORE UNLOAD - NAVIGATION'));
+      window.addEventListener('pagehide', () => console.log(TAG, '🎉 PAGE HIDE - POSSIBLE EXTERNAL'));
       document.addEventListener('visibilitychange', () => console.log(TAG, '👁️ VISIBILITY:', document.visibilityState));
 
-      // Manual small taps in 320x50
-      document.getElementById('tap1').addEventListener('click', function(e){ e.preventDefault(); tryMraidOpen(MARKET, 'market'); });
-      document.getElementById('tap2').addEventListener('click', function(e){ e.preventDefault(); tryMraidOpen(INTENT, 'intent'); });
-      document.getElementById('tap3').addEventListener('click', function(e){
-        e.preventDefault();
-        console.log(TAG, '🪟 window.open _blank → https://www.google.com');
-        try {
-          const w = window.open('https://www.google.com', '_blank');
-          if (!w) console.log(TAG, '⚠️ window.open blocked');
-        } catch (err) { console.log(TAG, '❌ window.open exception', String(err)); }
-      });
+      // Manual taps
+      document.getElementById('a1').addEventListener('click', function(e){ e.preventDefault(); tryForm(); });
+      document.getElementById('a2').addEventListener('click', function(e){ e.preventDefault(); tryAnchor(); });
+      document.getElementById('a3').addEventListener('click', function(e){ e.preventDefault(); tryReplace(); });
 
-      // Auto sequence (spaced, one-shot style). Targets SDK intercepts:
-      // 1) mraid://open?url=market://... (Play intent path)
-      // 2) mraid://open?url=intent://... (implicit VIEW)
-      // 3) window.open('_blank') https (some SDKs hand off _blank to external)
-      setTimeout(() => { tryMraidOpen(MARKET, 'market'); }, 900);
-      setTimeout(() => { tryMraidOpen(INTENT, 'intent'); }, 2400);
-      setTimeout(() => {
-        console.log(TAG, '🪟 Auto _blank attempt');
-        try { window.open('https://www.google.com', '_blank'); } catch(e) { console.log(TAG, '❌ _blank exception', String(e)); }
-      }, 3900);
+      // Auto spaced attempts targeting Play domain (common SDK interception)
+      setTimeout(tryForm, 900);
+      setTimeout(tryAnchor, 2400);
+      setTimeout(tryReplace, 3900);
     })();
   </script>
 </body>

@@ -2,40 +2,60 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Display-Only v168</title>
+  <title>Link-Based v169</title>
   <style>
-    body { margin:0; padding:20px; background:#000; color:#0f0; font:14px sans-serif; text-align:center; }
-    .status { margin:10px 0; }
-    .success { color: #0f0; }
-    .info { color: #ff0; }
+    body { 
+      margin:0; 
+      padding:10px; 
+      background:#000; 
+      color:#0f0; 
+      font:12px sans-serif; 
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      height:40px; /* Banner height constraint */
+      width:300px; /* Banner width constraint */
+    }
+    .link {
+      display:inline-block;
+      padding:8px 15px;
+      background:#333;
+      color:#0f0;
+      text-decoration:none;
+      border:1px solid #0f0;
+      border-radius:3px;
+      font-size:11px;
+      margin:2px;
+    }
+    .link:hover {
+      background:#0f0;
+      color:#000;
+    }
+    .status {
+      font-size:10px;
+      margin:2px 0;
+    }
   </style>
 </head>
 <body>
-  <div class="status success">✅ Display-Only v168 Loaded Successfully</div>
-  <div class="status info">🔬 Testing: External HTML loading without navigation</div>
-  <div class="status" id="timer">Time alive: 0s</div>
-  <div class="status">📊 If this stays visible for 10+ seconds, external loading works!</div>
+  <div class="status">✅ Link-Based v169</div>
+  <a href="https://www.google.com" class="link" target="_blank">Open Google</a>
 
   <script>
-    console.log('[VUNGLE-CLICK] ✅ Display-Only v168 loaded - NO NAVIGATION ATTEMPTS');
+    console.log('[VUNGLE-CLICK] ✅ Link-Based v169 loaded');
+    console.log('[VUNGLE-CLICK] 🔗 Using clickable links instead of JavaScript navigation');
+    console.log('[VUNGLE-CLICK] 🎯 This should trigger WebViewClient.shouldOverrideUrlLoading()');
     
-    let seconds = 0;
-    setInterval(() => {
-      seconds++;
-      document.getElementById('timer').textContent = `Time alive: ${seconds}s`;
-      console.log(`[VUNGLE-CLICK] 📊 Display-only page alive for ${seconds}s`);
-      
-      if (seconds === 5) {
-        console.log('[VUNGLE-CLICK] 🎉 5 seconds stable - external loading confirmed working!');
-      }
-      
-      if (seconds === 10) {
-        console.log('[VUNGLE-CLICK] 🎉 10 seconds stable - external HTML fully functional!');
-      }
-    }, 1000);
+    // Monitor link clicks
+    document.querySelector('.link').addEventListener('click', function(e) {
+      console.log('[VUNGLE-CLICK] 🖱️ Link clicked - should trigger native navigation');
+      console.log('[VUNGLE-CLICK] 🎯 Target URL:', e.target.href);
+      // Don't prevent default - let it go to native WebViewClient
+    });
     
-    console.log('[VUNGLE-CLICK] 📋 NO navigation will be attempted - pure display test');
-    console.log('[VUNGLE-CLICK] 🎯 This confirms if cross-origin loading works without crashes');
+    console.log('[VUNGLE-CLICK] 📋 Ready for user interaction or programmatic click');
   </script>
 </body>
 </html>

@@ -1,131 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
-    <title>Production Redirect v146</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            width: 320px;
-            height: 50px;
-            font-family: Arial, sans-serif; 
-            font-size: 11px;
-            overflow: hidden;
-            background: linear-gradient(90deg, #4285f4 0%, #ea4335 100%);
-            color: white;
-            position: relative;
-        }
-        
-        .banner-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 8px;
-        }
-        
-        .info {
-            flex: 1;
-            text-align: left;
-        }
-        
-        .title {
-            font-size: 12px;
-            font-weight: bold;
-            line-height: 14px;
-        }
-        
-        .subtitle {
-            font-size: 9px;
-            opacity: 0.9;
-            line-height: 10px;
-        }
-        
-        .trigger-btn {
-            padding: 6px 12px;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 4px;
-            color: white;
-            text-decoration: none;
-            font-size: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            line-height: 1;
-        }
-        
-        .trigger-btn:hover {
-            background: rgba(255,255,255,0.4);
-            transform: scale(1.05);
-        }
-        
-        /* Full clickable overlay */
-        .click-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Production Redirect v147</title>
+  <style>
+    html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+  </style>
 </head>
 <body>
-    <div class="banner-container">
-        <div class="info">
-            <div class="title">🎯 Production Method v146</div>
-            <div class="subtitle">Navigation-based redirect ready</div>
-        </div>
-        
-        <a href="#" class="trigger-btn" onclick="triggerRedirect()">🚀 Go</a>
-    </div>
-    
-    <!-- Full banner clickable -->
-    <div class="click-overlay" onclick="triggerRedirect()"></div>
+  <div class="sr-only">Production redirect controller</div>
 
-    <script>
-        console.log('[VUNGLE-CLICK] 🎯 PRODUCTION REDIRECT v146 LOADED!');
-        console.log('[VUNGLE-CLICK] 📋 Using navigation-based redirect method');
-        console.log('[VUNGLE-CLICK] 🔧 Relies on shouldOverrideUrlLoading implementation');
-        
-        function triggerRedirect() {
-            console.log('[VUNGLE-CLICK] 👆 USER TRIGGERED PRODUCTION REDIRECT!');
-            console.log('[VUNGLE-CLICK] 🚀 Executing navigation to Chrome intent...');
-            
-            // Use navigation-based redirect that shouldOverrideUrlLoading can intercept
-            // This is the production method used by real apps
-            window.location.href = 'intent://www.google.com#Intent;scheme=https;package=com.android.chrome;category=android.intent.category.BROWSABLE;end';
-            
-            console.log('[VUNGLE-CLICK] ✅ Navigation request sent - WebViewClient should handle');
+  <script>
+    (function () {
+      const TAG = '[VUNGLE-CLICK]';
+
+      const INTENT_URL = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
+
+      console.log(TAG, '🎯 PRODUCTION REDIRECT v147 LOADED!');
+      console.log(TAG, '📋 Using implicit VIEW intent with BROWSABLE fallback');
+
+      function tryNavigate() {
+        try {
+          console.log(TAG, '🚀 Executing navigation to implicit intent...');
+          // Main attempt: triggers shouldOverrideUrlLoading in host app
+          window.location.href = INTENT_URL;
+        } catch (e) {
+          console.log(TAG, '❌ Navigation threw:', String(e));
         }
+      }
 
-        // Auto-execute after 2 seconds for testing
-        setTimeout(() => {
-            console.log('[VUNGLE-CLICK] ⚡ AUTO-EXECUTING PRODUCTION REDIRECT...');
-            triggerRedirect();
-        }, 2000);
+      // Extra signal hooks (useful in logs if WebView starts to hide/unload)
+      window.addEventListener('beforeunload', function () {
+        console.log(TAG, '⚡ BEFORE UNLOAD - PRODUCTION NAVIGATION!');
+      });
+      document.addEventListener('visibilitychange', function () {
+        console.log(TAG, '👁️ VISIBILITY CHANGE - STATE:', document.visibilityState);
+      });
+      window.addEventListener('pagehide', function () {
+        console.log(TAG, '🎉 PAGE HIDE - POSSIBLE EXTERNAL LAUNCH!');
+      });
 
-        // Event monitoring
-        window.addEventListener('beforeunload', () => {
-            console.log('[VUNGLE-CLICK] 🚀 BEFORE UNLOAD - PRODUCTION NAVIGATION!');
-        });
-
-        window.addEventListener('pagehide', () => {
-            console.log('[VUNGLE-CLICK] 🎉 PAGE HIDE - PRODUCTION SUCCESS!');
-        });
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                console.log('[VUNGLE-CLICK] 👁️ VISIBILITY CHANGE - EXTERNAL LAUNCH!');
-            }
-        });
-
-        console.log('[VUNGLE-CLICK] 🌐 PRODUCTION REDIRECT SYSTEM READY!');
-        console.log('[VUNGLE-CLICK] 📋 Waiting for shouldOverrideUrlLoading handler...');
-    </script>
+      // Small delay to let the page initialize cleanly
+      setTimeout(tryNavigate, 1500);
+    })();
+  </script>
 </body>
 </html>
+

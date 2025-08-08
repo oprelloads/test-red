@@ -35,6 +35,8 @@
       const params = new URL(location.href).searchParams;
       const mode = (params.get('mode') || 'intent').toLowerCase();
       let attempted = false;
+      console.log(TAG, '🔍 FULL URL:', location.href);
+      console.log(TAG, '🔍 SEARCH PARAMS:', location.search);
 
       function nav(url, label, useReplace) {
         if (attempted) return;

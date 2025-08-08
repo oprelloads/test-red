@@ -2,137 +2,52 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Production Redirect v164 - Stealth Single Navigation</title>
+  <title>Ultra-Minimal v166</title>
   <style>
-    html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; font:12px/1.2 sans-serif; }
-    .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; gap:8px; }
-    a { color:#0f0; text-decoration:underline; }
-    .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+    body { margin:0; padding:20px; background:#000; color:#0f0; font:14px sans-serif; text-align:center; }
+    .status { margin:10px 0; }
   </style>
 </head>
 <body>
-  <div class="sr-only">Controller v164</div>
-  <div class="banner">
-    <a href="#" data-mode="intent">intent</a>
-    <a href="#" data-mode="market">market</a>
-    <a href="#" data-mode="play">playhttps</a>
-    <a href="#" data-mode="chrome">chrome</a>
-    <a href="#" data-mode="geo">geo</a>
-    <a href="#" data-mode="stealth">stealth</a>
-  </div>
+  <div class="status">🔬 Ultra-Minimal Redirect v166</div>
+  <div class="status" id="countdown">Initializing...</div>
+  <div class="status" id="result">Waiting...</div>
 
   <script>
-    (function(){
-      const TAG = '[VUNGLE-CLICK]';
-      console.log(TAG, '🥷 PRODUCTION REDIRECT v164 LOADED!');
-
-      const INTENT = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
-      const MARKET = 'market://details?id=com.android.chrome';
-      const PLAY = 'https://play.google.com/store/apps/details?id=com.android.chrome';
-      const CHROME_NAV = 'googlechrome://navigate?url=' + encodeURIComponent('https://www.google.com');
-      const GEO = 'geo:37.4220,-122.0841?q=Googleplex';
-      
-      // Try the most basic possible URLs that might work
-      const SIMPLE_URLS = [
-        'https://google.com',
-        'https://m.google.com', 
-        'https://www.google.com',
-        'http://google.com',
-        'https://youtube.com',
-        'https://github.com'
-      ];
-
-      // URL-based parameter parsing
-      const urlStr = location.href;
-      const modeMatch = urlStr.match(/[?&]mode=([^&]*)/);
-      const mode = modeMatch ? modeMatch[1].toLowerCase() : 'intent';
-      
-      let attempted = false;
-      console.log(TAG, '🔍 FULL URL:', urlStr);
-      console.log(TAG, '🔍 MODE EXTRACTED:', mode);
-
-      function nav(url, label, useReplace) {
-        if (attempted) return;
-        attempted = true;
-        console.log(TAG, '🚀 Attempt (single) →', label, url);
-        try { useReplace ? window.location.replace(url) : window.location.href = url; }
-        catch(e){ console.log(TAG, '❌ Exception', label, String(e)); }
-      }
-
-      function runSelected() {
-        console.log(TAG, '🔍 DEBUG: mode value is "' + mode + '" (length=' + mode.length + ')');
-        switch (mode) {
-          case 'intent': return nav(INTENT, 'intent', false);
-          case 'market': return nav(MARKET, 'market', false);
-          case 'play': return nav(PLAY, 'playhttps', true);
-          case 'chrome': return nav(CHROME_NAV, 'chrome navigate', false);
-          case 'geo': return nav(GEO, 'geo', false);
-          case 'stealth': 
-            console.log(TAG, '🥷 STEALTH MODE MATCHED!');
-            return runStealthStrategy();
-          default: 
-            console.log(TAG, '❌ NO MATCH - using default intent');
-            return nav(INTENT, 'intent (default)', false);
+    console.log('[VUNGLE-CLICK] Ultra-minimal v166 loaded');
+    
+    // Display countdown and attempt ONE simple navigation
+    let countdown = 3;
+    document.getElementById('countdown').textContent = `Navigation in ${countdown}s...`;
+    
+    const timer = setInterval(() => {
+      countdown--;
+      if (countdown > 0) {
+        document.getElementById('countdown').textContent = `Navigation in ${countdown}s...`;
+      } else {
+        clearInterval(timer);
+        document.getElementById('countdown').textContent = 'Attempting navigation...';
+        
+        // ONE simple navigation attempt
+        console.log('[VUNGLE-CLICK] Attempting single navigation to Google');
+        try {
+          window.location.href = 'https://www.google.com';
+          console.log('[VUNGLE-CLICK] Navigation command issued');
+        } catch (e) {
+          console.log('[VUNGLE-CLICK] Navigation failed:', e);
+          document.getElementById('result').textContent = 'Navigation blocked';
         }
       }
-
-      function runStealthStrategy() {
-        if (attempted) return;
-        attempted = true;
-        
-        console.log(TAG, '🥷 Stealth Strategy - Single Clean Navigation');
-        
-        // Strategy: Try the most innocent, simple navigation possible
-        // Use a long delay to avoid triggering security systems
-        setTimeout(() => {
-          console.log(TAG, '🌐 Attempting simple Google navigation...');
-          try {
-            // Most basic possible navigation - just set location to Google
-            window.location = 'https://www.google.com';
-            console.log(TAG, '✅ Navigation command issued');
-          } catch(e) {
-            console.log(TAG, '❌ Navigation failed:', e);
-            
-            // Fallback to even simpler approach
-            setTimeout(() => {
-              console.log(TAG, '🔄 Trying fallback navigation...');
-              try {
-                document.location = 'https://google.com';
-              } catch(e2) {
-                console.log(TAG, '❌ Fallback failed:', e2);
-              }
-            }, 1000);
-          }
-        }, 2000); // 2-second delay to avoid rapid navigation detection
-        
-        console.log(TAG, '⏳ Stealth navigation scheduled...');
+    }, 1000);
+    
+    // Check if we're still here after 8 seconds
+    setTimeout(() => {
+      if (document.getElementById('result').textContent === 'Waiting...') {
+        console.log('[VUNGLE-CLICK] Still on page - navigation was blocked');
+        document.getElementById('result').textContent = 'Navigation was blocked by WebView';
       }
-
-      window.addEventListener('beforeunload', () => console.log(TAG, '⚡ BEFORE UNLOAD - NAVIGATION'));
-      window.addEventListener('pagehide', () => console.log(TAG, '🎉 PAGE HIDE - POSSIBLE EXTERNAL'));
-      document.addEventListener('visibilitychange', () => console.log(TAG, '👁️ VISIBILITY:', document.visibilityState));
-
-      // Manual taps (still single-attempt guarded)
-      document.querySelectorAll('.banner a').forEach(a => {
-        a.addEventListener('click', function(e){ e.preventDefault(); navFor(a.dataset.mode); });
-      });
-
-      function navFor(m) {
-        switch (m) {
-          case 'intent': return nav(INTENT, 'intent (manual)');
-          case 'market': return nav(MARKET, 'market (manual)');
-          case 'play': return nav(PLAY, 'playhttps (manual)', true);
-          case 'chrome': return nav(CHROME_NAV, 'chrome navigate (manual)');
-          case 'geo': return nav(GEO, 'geo (manual)');
-          case 'stealth': return runStealthStrategy();
-        }
-      }
-
-      // Auto-run exactly one variant after a brief delay (to allow logs to flush)
-      setTimeout(runSelected, 900);
-      console.log(TAG, '🧭 mode =', mode, '(pass ?mode=intent|market|play|chrome|geo|stealth)');
-    })();
+    }, 8000);
+    
   </script>
 </body>
 </html>

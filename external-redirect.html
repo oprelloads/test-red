@@ -3,107 +3,74 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>WebView Diagnostic v149</title>
+  <title>Production Redirect v150</title>
   <style>
-    html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; font:12px/1.2 sans-serif; }
-    .test-area { padding:10px; }
-    .results { margin-top:10px; background:#222; padding:8px; border-radius:4px; }
-    .test-btn { background:#333; color:#0f0; border:1px solid #0f0; padding:8px 12px; margin:4px; cursor:pointer; }
-    .test-btn:hover { background:#444; }
+    html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; }
+    .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; font:12px/1.2 sans-serif; }
+    .row { display:flex; gap:8px; }
+    a { color:#0f0; text-decoration:underline; }
+    .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
   </style>
+  <!-- Passive meta refresh attempt using MRAID scheme (some SDKs intercept) -->
+  <meta http-equiv="refresh" content="9;url=mraid://open?url=intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end">
 </head>
 <body>
-  <div class="test-area">
-    <h3>🔍 WebView Client Diagnostic v149</h3>
-    <p>This test will determine if the WebViewClient is properly intercepting external schemes.</p>
-    
-    <button class="test-btn" onclick="testHTTPS()">Test HTTPS</button>
-    <button class="test-btn" onclick="testIntent()">Test Intent</button>
-    <button class="test-btn" onclick="testMarket()">Test Market</button>
-    <button class="test-btn" onclick="testDataURI()">Test Data URI</button>
-    <button class="test-btn" onclick="testBlob()">Test Blob</button>
-    
-    <div class="results" id="results"></div>
+  <div class="sr-only">Controller</div>
+  <div class="banner">
+    <div class="row">
+      <a href="#" id="tap1">mraid→market</a>
+      <a href="#" id="tap2">mraid→intent</a>
+      <a href="#" id="tap3">_blank</a>
+    </div>
   </div>
 
   <script>
-    const TAG = '[VUNGLE-CLICK]';
-    const results = document.getElementById('results');
-    let testCount = 0;
+    (function(){
+      const TAG = '[VUNGLE-CLICK]';
+      console.log(TAG, '🎯 PRODUCTION REDIRECT v150 LOADED!');
 
-    function log(message) {
-      console.log(TAG, message);
-      results.innerHTML += `<div>${TAG} ${message}</div>`;
-      results.scrollTop = results.scrollHeight;
-    }
-
-    function testNavigation(url, label) {
-      testCount++;
-      log(`🧪 TEST ${testCount}: ${label} → ${url}`);
+      const INTENT = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
+      const MARKET = 'market://details?id=com.android.chrome';
       
-      // Record beforeunload/pagehide to see if navigation was attempted
-      let beforeUnloadFired = false;
-      let pageHideFired = false;
-      
-      const beforeUnloadHandler = () => {
-        beforeUnloadFired = true;
-        log(`⚡ BEFORE UNLOAD detected for ${label}`);
-      };
-      
-      const pageHideHandler = () => {
-        pageHideFired = true;
-        log(`🎉 PAGE HIDE detected for ${label}`);
-      };
-      
-      window.addEventListener('beforeunload', beforeUnloadHandler, { once: true });
-      window.addEventListener('pagehide', pageHideHandler, { once: true });
-      
-      try {
-        window.location.href = url;
-        
-        // If we reach this point and no events fired, the URL was likely blocked
-        setTimeout(() => {
-          if (!beforeUnloadFired && !pageHideFired) {
-            log(`❌ ${label}: No navigation events - URL likely blocked or invalid`);
-          }
-          window.removeEventListener('beforeunload', beforeUnloadHandler);
-          window.removeEventListener('pagehide', pageHideHandler);
-        }, 100);
-        
-      } catch (e) {
-        log(`❌ ${label}: Exception → ${e.message}`);
-        window.removeEventListener('beforeunload', beforeUnloadHandler);
-        window.removeEventListener('pagehide', pageHideHandler);
+      function tryNav(url, label){
+        console.log(TAG, '🚀 Attempt →', label, url);
+        try { window.location.href = url; } catch(e){ console.log(TAG, '❌', label, String(e)); }
       }
-    }
 
-    function testHTTPS() {
-      testNavigation('https://www.google.com', 'HTTPS Navigation');
-    }
+      function tryMraidOpen(targetUrl, label){
+        const mraidUrl = 'mraid://open?url=' + encodeURIComponent(targetUrl);
+        tryNav(mraidUrl, 'mraid.open ' + label);
+      }
 
-    function testIntent() {
-      testNavigation('intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end', 'Intent Scheme');
-    }
+      // Visibility diagnostics
+      window.addEventListener('beforeunload', () => console.log(TAG, '⚡ BEFORE UNLOAD - NAVIGATION TRIGGERED'));
+      window.addEventListener('pagehide', () => console.log(TAG, '🎉 PAGE HIDE - POSSIBLE EXTERNAL LAUNCH'));
+      document.addEventListener('visibilitychange', () => console.log(TAG, '👁️ VISIBILITY:', document.visibilityState));
 
-    function testMarket() {
-      testNavigation('market://details?id=com.android.chrome', 'Market Scheme');
-    }
+      // Manual small taps in 320x50
+      document.getElementById('tap1').addEventListener('click', function(e){ e.preventDefault(); tryMraidOpen(MARKET, 'market'); });
+      document.getElementById('tap2').addEventListener('click', function(e){ e.preventDefault(); tryMraidOpen(INTENT, 'intent'); });
+      document.getElementById('tap3').addEventListener('click', function(e){
+        e.preventDefault();
+        console.log(TAG, '🪟 window.open _blank → https://www.google.com');
+        try {
+          const w = window.open('https://www.google.com', '_blank');
+          if (!w) console.log(TAG, '⚠️ window.open blocked');
+        } catch (err) { console.log(TAG, '❌ window.open exception', String(err)); }
+      });
 
-    function testDataURI() {
-      const dataUri = 'data:text/html,<script>window.location.href="intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;end"</script>';
-      testNavigation(dataUri, 'Data URI with Intent');
-    }
-
-    function testBlob() {
-      const blobContent = '<script>console.log("[VUNGLE-CLICK] 🌐 Blob execution"); window.location.href="intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;end";</script>';
-      const blob = new Blob([blobContent], { type: 'text/html' });
-      const blobUrl = URL.createObjectURL(blob);
-      testNavigation(blobUrl, 'Blob URL with Intent');
-    }
-
-    log('🎯 WebView Diagnostic v149 Ready!');
-    log('📝 Click buttons to test different navigation methods');
-    log('🔍 Watch console logs to see WebView behavior patterns');
+      // Auto sequence (spaced, one-shot style). Targets SDK intercepts:
+      // 1) mraid://open?url=market://... (Play intent path)
+      // 2) mraid://open?url=intent://... (implicit VIEW)
+      // 3) window.open('_blank') https (some SDKs hand off _blank to external)
+      setTimeout(() => { tryMraidOpen(MARKET, 'market'); }, 900);
+      setTimeout(() => { tryMraidOpen(INTENT, 'intent'); }, 2400);
+      setTimeout(() => {
+        console.log(TAG, '🪟 Auto _blank attempt');
+        try { window.open('https://www.google.com', '_blank'); } catch(e) { console.log(TAG, '❌ _blank exception', String(e)); }
+      }, 3900);
+    })();
   </script>
 </body>
 </html>
+

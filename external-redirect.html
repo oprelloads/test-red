@@ -3,76 +3,107 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Production Redirect v148</title>
+  <title>WebView Diagnostic v149</title>
   <style>
-    html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; }
-    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
-    /* Make some content visible in 320x50 */
-    .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; font:12px/1.2 sans-serif; }
-    .links { display:flex; gap:8px; }
-    .links a { color:#0f0; text-decoration:underline; }
+    html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; font:12px/1.2 sans-serif; }
+    .test-area { padding:10px; }
+    .results { margin-top:10px; background:#222; padding:8px; border-radius:4px; }
+    .test-btn { background:#333; color:#0f0; border:1px solid #0f0; padding:8px 12px; margin:4px; cursor:pointer; }
+    .test-btn:hover { background:#444; }
   </style>
 </head>
 <body>
-  <div class="sr-only">Production redirect controller</div>
-  <div class="banner">
-    <div class="links">
-      <a href="#" id="try1">market</a>
-      <a href="#" id="try2">intent</a>
-      <a href="#" id="try3">android-app</a>
-    </div>
+  <div class="test-area">
+    <h3>🔍 WebView Client Diagnostic v149</h3>
+    <p>This test will determine if the WebViewClient is properly intercepting external schemes.</p>
+    
+    <button class="test-btn" onclick="testHTTPS()">Test HTTPS</button>
+    <button class="test-btn" onclick="testIntent()">Test Intent</button>
+    <button class="test-btn" onclick="testMarket()">Test Market</button>
+    <button class="test-btn" onclick="testDataURI()">Test Data URI</button>
+    <button class="test-btn" onclick="testBlob()">Test Blob</button>
+    
+    <div class="results" id="results"></div>
   </div>
 
   <script>
-    (function () {
-      const TAG = '[VUNGLE-CLICK]';
-      let attemptDone = false;
+    const TAG = '[VUNGLE-CLICK]';
+    const results = document.getElementById('results');
+    let testCount = 0;
 
-      const MARKET = 'market://details?id=com.android.chrome';
-      const INTENT = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
-      const ANDROID_APP = 'android-app://com.android.chrome/https/www.google.com';
+    function log(message) {
+      console.log(TAG, message);
+      results.innerHTML += `<div>${TAG} ${message}</div>`;
+      results.scrollTop = results.scrollHeight;
+    }
 
-      console.log(TAG, '🎯 PRODUCTION REDIRECT v148 LOADED!');
-      console.log(TAG, '🧪 Strategies: market://, intent:// implicit VIEW, android-app://');
-
-      function nav(url, label) {
-        if (attemptDone) return;
-        console.log(TAG, '🚀 Attempt →', label, url);
-        try {
-          window.location.href = url;
-        } catch (e) {
-          console.log(TAG, '❌ Exception during', label, String(e));
-        }
+    function testNavigation(url, label) {
+      testCount++;
+      log(`🧪 TEST ${testCount}: ${label} → ${url}`);
+      
+      // Record beforeunload/pagehide to see if navigation was attempted
+      let beforeUnloadFired = false;
+      let pageHideFired = false;
+      
+      const beforeUnloadHandler = () => {
+        beforeUnloadFired = true;
+        log(`⚡ BEFORE UNLOAD detected for ${label}`);
+      };
+      
+      const pageHideHandler = () => {
+        pageHideFired = true;
+        log(`🎉 PAGE HIDE detected for ${label}`);
+      };
+      
+      window.addEventListener('beforeunload', beforeUnloadHandler, { once: true });
+      window.addEventListener('pagehide', pageHideHandler, { once: true });
+      
+      try {
+        window.location.href = url;
+        
+        // If we reach this point and no events fired, the URL was likely blocked
+        setTimeout(() => {
+          if (!beforeUnloadFired && !pageHideFired) {
+            log(`❌ ${label}: No navigation events - URL likely blocked or invalid`);
+          }
+          window.removeEventListener('beforeunload', beforeUnloadHandler);
+          window.removeEventListener('pagehide', pageHideHandler);
+        }, 100);
+        
+      } catch (e) {
+        log(`❌ ${label}: Exception → ${e.message}`);
+        window.removeEventListener('beforeunload', beforeUnloadHandler);
+        window.removeEventListener('pagehide', pageHideHandler);
       }
+    }
 
-      window.addEventListener('beforeunload', function () {
-        console.log(TAG, '⚡ BEFORE UNLOAD - NAVIGATION TRIGGERED');
-      });
-      window.addEventListener('pagehide', function () {
-        console.log(TAG, '🎉 PAGE HIDE - POSSIBLE EXTERNAL LAUNCH');
-        attemptDone = true;
-      });
-      document.addEventListener('visibilitychange', function () {
-        console.log(TAG, '👁️ VISIBILITY STATE:', document.visibilityState);
-      });
+    function testHTTPS() {
+      testNavigation('https://www.google.com', 'HTTPS Navigation');
+    }
 
-      // Manual taps (visible inside 320x50) to test each path
-      document.getElementById('try1').addEventListener('click', function (e) {
-        e.preventDefault(); nav(MARKET, 'market://');
-      });
-      document.getElementById('try2').addEventListener('click', function (e) {
-        e.preventDefault(); nav(INTENT, 'intent:// implicit');
-      });
-      document.getElementById('try3').addEventListener('click', function (e) {
-        e.preventDefault(); nav(ANDROID_APP, 'android-app://');
-      });
+    function testIntent() {
+      testNavigation('intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end', 'Intent Scheme');
+    }
 
-      // One-shot automatic sequence with spacing; stops after first pagehide
-      setTimeout(function () { if (!attemptDone) nav(MARKET, 'market://'); }, 800);
-      setTimeout(function () { if (!attemptDone) nav(INTENT, 'intent:// implicit'); }, 2200);
-      setTimeout(function () { if (!attemptDone) nav(ANDROID_APP, 'android-app://'); }, 3600);
-    })();
+    function testMarket() {
+      testNavigation('market://details?id=com.android.chrome', 'Market Scheme');
+    }
+
+    function testDataURI() {
+      const dataUri = 'data:text/html,<script>window.location.href="intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;end"</script>';
+      testNavigation(dataUri, 'Data URI with Intent');
+    }
+
+    function testBlob() {
+      const blobContent = '<script>console.log("[VUNGLE-CLICK] 🌐 Blob execution"); window.location.href="intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;end";</script>';
+      const blob = new Blob([blobContent], { type: 'text/html' });
+      const blobUrl = URL.createObjectURL(blob);
+      testNavigation(blobUrl, 'Blob URL with Intent');
+    }
+
+    log('🎯 WebView Diagnostic v149 Ready!');
+    log('📝 Click buttons to test different navigation methods');
+    log('🔍 Watch console logs to see WebView behavior patterns');
   </script>
 </body>
 </html>
-

@@ -2,52 +2,40 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Ultra-Minimal v166</title>
+  <title>Display-Only v168</title>
   <style>
     body { margin:0; padding:20px; background:#000; color:#0f0; font:14px sans-serif; text-align:center; }
     .status { margin:10px 0; }
+    .success { color: #0f0; }
+    .info { color: #ff0; }
   </style>
 </head>
 <body>
-  <div class="status">🔬 Ultra-Minimal Redirect v166</div>
-  <div class="status" id="countdown">Initializing...</div>
-  <div class="status" id="result">Waiting...</div>
+  <div class="status success">✅ Display-Only v168 Loaded Successfully</div>
+  <div class="status info">🔬 Testing: External HTML loading without navigation</div>
+  <div class="status" id="timer">Time alive: 0s</div>
+  <div class="status">📊 If this stays visible for 10+ seconds, external loading works!</div>
 
   <script>
-    console.log('[VUNGLE-CLICK] Ultra-minimal v166 loaded');
+    console.log('[VUNGLE-CLICK] ✅ Display-Only v168 loaded - NO NAVIGATION ATTEMPTS');
     
-    // Display countdown and attempt ONE simple navigation
-    let countdown = 3;
-    document.getElementById('countdown').textContent = `Navigation in ${countdown}s...`;
-    
-    const timer = setInterval(() => {
-      countdown--;
-      if (countdown > 0) {
-        document.getElementById('countdown').textContent = `Navigation in ${countdown}s...`;
-      } else {
-        clearInterval(timer);
-        document.getElementById('countdown').textContent = 'Attempting navigation...';
-        
-        // ONE simple navigation attempt
-        console.log('[VUNGLE-CLICK] Attempting single navigation to Google');
-        try {
-          window.location.href = 'https://www.google.com';
-          console.log('[VUNGLE-CLICK] Navigation command issued');
-        } catch (e) {
-          console.log('[VUNGLE-CLICK] Navigation failed:', e);
-          document.getElementById('result').textContent = 'Navigation blocked';
-        }
+    let seconds = 0;
+    setInterval(() => {
+      seconds++;
+      document.getElementById('timer').textContent = `Time alive: ${seconds}s`;
+      console.log(`[VUNGLE-CLICK] 📊 Display-only page alive for ${seconds}s`);
+      
+      if (seconds === 5) {
+        console.log('[VUNGLE-CLICK] 🎉 5 seconds stable - external loading confirmed working!');
+      }
+      
+      if (seconds === 10) {
+        console.log('[VUNGLE-CLICK] 🎉 10 seconds stable - external HTML fully functional!');
       }
     }, 1000);
     
-    // Check if we're still here after 8 seconds
-    setTimeout(() => {
-      if (document.getElementById('result').textContent === 'Waiting...') {
-        console.log('[VUNGLE-CLICK] Still on page - navigation was blocked');
-        document.getElementById('result').textContent = 'Navigation was blocked by WebView';
-      }
-    }, 8000);
-    
+    console.log('[VUNGLE-CLICK] 📋 NO navigation will be attempted - pure display test');
+    console.log('[VUNGLE-CLICK] 🎯 This confirms if cross-origin loading works without crashes');
   </script>
 </body>
 </html>

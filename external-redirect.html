@@ -3,47 +3,74 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Production Redirect v147</title>
+  <title>Production Redirect v148</title>
   <style>
     html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; }
     .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+    /* Make some content visible in 320x50 */
+    .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; font:12px/1.2 sans-serif; }
+    .links { display:flex; gap:8px; }
+    .links a { color:#0f0; text-decoration:underline; }
   </style>
 </head>
 <body>
   <div class="sr-only">Production redirect controller</div>
+  <div class="banner">
+    <div class="links">
+      <a href="#" id="try1">market</a>
+      <a href="#" id="try2">intent</a>
+      <a href="#" id="try3">android-app</a>
+    </div>
+  </div>
 
   <script>
     (function () {
       const TAG = '[VUNGLE-CLICK]';
+      let attemptDone = false;
 
-      const INTENT_URL = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
+      const MARKET = 'market://details?id=com.android.chrome';
+      const INTENT = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
+      const ANDROID_APP = 'android-app://com.android.chrome/https/www.google.com';
 
-      console.log(TAG, '🎯 PRODUCTION REDIRECT v147 LOADED!');
-      console.log(TAG, '📋 Using implicit VIEW intent with BROWSABLE fallback');
+      console.log(TAG, '🎯 PRODUCTION REDIRECT v148 LOADED!');
+      console.log(TAG, '🧪 Strategies: market://, intent:// implicit VIEW, android-app://');
 
-      function tryNavigate() {
+      function nav(url, label) {
+        if (attemptDone) return;
+        console.log(TAG, '🚀 Attempt →', label, url);
         try {
-          console.log(TAG, '🚀 Executing navigation to implicit intent...');
-          // Main attempt: triggers shouldOverrideUrlLoading in host app
-          window.location.href = INTENT_URL;
+          window.location.href = url;
         } catch (e) {
-          console.log(TAG, '❌ Navigation threw:', String(e));
+          console.log(TAG, '❌ Exception during', label, String(e));
         }
       }
 
-      // Extra signal hooks (useful in logs if WebView starts to hide/unload)
       window.addEventListener('beforeunload', function () {
-        console.log(TAG, '⚡ BEFORE UNLOAD - PRODUCTION NAVIGATION!');
-      });
-      document.addEventListener('visibilitychange', function () {
-        console.log(TAG, '👁️ VISIBILITY CHANGE - STATE:', document.visibilityState);
+        console.log(TAG, '⚡ BEFORE UNLOAD - NAVIGATION TRIGGERED');
       });
       window.addEventListener('pagehide', function () {
-        console.log(TAG, '🎉 PAGE HIDE - POSSIBLE EXTERNAL LAUNCH!');
+        console.log(TAG, '🎉 PAGE HIDE - POSSIBLE EXTERNAL LAUNCH');
+        attemptDone = true;
+      });
+      document.addEventListener('visibilitychange', function () {
+        console.log(TAG, '👁️ VISIBILITY STATE:', document.visibilityState);
       });
 
-      // Small delay to let the page initialize cleanly
-      setTimeout(tryNavigate, 1500);
+      // Manual taps (visible inside 320x50) to test each path
+      document.getElementById('try1').addEventListener('click', function (e) {
+        e.preventDefault(); nav(MARKET, 'market://');
+      });
+      document.getElementById('try2').addEventListener('click', function (e) {
+        e.preventDefault(); nav(INTENT, 'intent:// implicit');
+      });
+      document.getElementById('try3').addEventListener('click', function (e) {
+        e.preventDefault(); nav(ANDROID_APP, 'android-app://');
+      });
+
+      // One-shot automatic sequence with spacing; stops after first pagehide
+      setTimeout(function () { if (!attemptDone) nav(MARKET, 'market://'); }, 800);
+      setTimeout(function () { if (!attemptDone) nav(INTENT, 'intent:// implicit'); }, 2200);
+      setTimeout(function () { if (!attemptDone) nav(ANDROID_APP, 'android-app://'); }, 3600);
     })();
   </script>
 </body>

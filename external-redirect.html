@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Production Redirect v157 - Single-Variant Runner</title>
+  <title>Production Redirect v160 - Enhanced Market Strategy</title>
   <style>
     html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; font:12px/1.2 sans-serif; }
     .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; gap:8px; }
@@ -12,19 +12,20 @@
   </style>
 </head>
 <body>
-  <div class="sr-only">Controller</div>
+  <div class="sr-only">Controller v160</div>
   <div class="banner">
     <a href="#" data-mode="intent">intent</a>
     <a href="#" data-mode="market">market</a>
     <a href="#" data-mode="play">playhttps</a>
     <a href="#" data-mode="chrome">chrome</a>
     <a href="#" data-mode="geo">geo</a>
+    <a href="#" data-mode="enhanced">enhanced</a>
   </div>
 
   <script>
     (function(){
       const TAG = '[VUNGLE-CLICK]';
-      console.log(TAG, '🎯 PRODUCTION REDIRECT v157 LOADED!');
+      console.log(TAG, '🎯 PRODUCTION REDIRECT v160 LOADED!');
 
       const INTENT = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
       const MARKET = 'market://details?id=com.android.chrome';
@@ -32,11 +33,13 @@
       const CHROME_NAV = 'googlechrome://navigate?url=' + encodeURIComponent('https://www.google.com');
       const GEO = 'geo:37.4220,-122.0841?q=Googleplex';
 
-      const params = new URL(location.href).searchParams;
-      const mode = (params.get('mode') || 'intent').toLowerCase();
+      // More robust parameter parsing
+      const urlStr = location.href;
+      const modeMatch = urlStr.match(/[?&]mode=([^&]*)/);
+      const mode = modeMatch ? modeMatch[1].toLowerCase() : 'intent';
       let attempted = false;
-      console.log(TAG, '🔍 FULL URL:', location.href);
-      console.log(TAG, '🔍 SEARCH PARAMS:', location.search);
+      console.log(TAG, '🔍 FULL URL:', urlStr);
+      console.log(TAG, '🔍 MODE EXTRACTED:', mode);
 
       function nav(url, label, useReplace) {
         if (attempted) return;
@@ -47,14 +50,42 @@
       }
 
       function runSelected() {
+        console.log(TAG, '🔍 DEBUG: mode value is "' + mode + '" (length=' + mode.length + ')');
         switch (mode) {
           case 'intent': return nav(INTENT, 'intent', false);
           case 'market': return nav(MARKET, 'market', false);
           case 'play': return nav(PLAY, 'playhttps', true);
           case 'chrome': return nav(CHROME_NAV, 'chrome navigate', false);
           case 'geo': return nav(GEO, 'geo', false);
-          default: return nav(INTENT, 'intent (default)', false);
+          case 'enhanced': 
+            console.log(TAG, '✅ ENHANCED MODE MATCHED!');
+            return runEnhancedMarket();
+          default: 
+            console.log(TAG, '❌ NO MATCH - using default intent');
+            return nav(INTENT, 'intent (default)', false);
         }
+      }
+
+      function runEnhancedMarket() {
+        if (attempted) return;
+        attempted = true;
+        console.log(TAG, '🎯 Enhanced Market Strategy - Multi-Fallback');
+        
+        // Strategy 1: Market scheme with delayed fallbacks
+        console.log(TAG, '🚀 Strategy 1: Market scheme');
+        try { window.location.href = MARKET; } catch(e) { console.log(TAG, '❌ Market failed:', e); }
+        
+        // Strategy 2: Fallback to HTTPS after delay (if market fails)
+        setTimeout(() => {
+          console.log(TAG, '🚀 Strategy 2: HTTPS fallback');
+          try { window.location.href = PLAY; } catch(e) { console.log(TAG, '❌ HTTPS failed:', e); }
+        }, 2000);
+        
+        // Strategy 3: Google redirect as final fallback
+        setTimeout(() => {
+          console.log(TAG, '🚀 Strategy 3: Google redirect fallback');
+          try { window.location.href = 'https://www.google.com/url?q=' + encodeURIComponent(PLAY); } catch(e) { console.log(TAG, '❌ Google redirect failed:', e); }
+        }, 4000);
       }
 
       window.addEventListener('beforeunload', () => console.log(TAG, '⚡ BEFORE UNLOAD - NAVIGATION'));
@@ -73,14 +104,14 @@
           case 'play': return nav(PLAY, 'playhttps (manual)', true);
           case 'chrome': return nav(CHROME_NAV, 'chrome navigate (manual)');
           case 'geo': return nav(GEO, 'geo (manual)');
+          case 'enhanced': return runEnhancedMarket();
         }
       }
 
       // Auto-run exactly one variant after a brief delay (to allow logs to flush)
       setTimeout(runSelected, 900);
-      console.log(TAG, '🧭 mode =', mode, '(pass ?mode=intent|market|play|chrome|geo)');
+      console.log(TAG, '🧭 mode =', mode, '(pass ?mode=intent|market|play|chrome|geo|enhanced)');
     })();
   </script>
 </body>
 </html>
-

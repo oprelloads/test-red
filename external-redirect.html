@@ -3,47 +3,73 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Production Redirect v151 - Play Store HTTPS</title>
+  <title>Production Redirect v152 - Trampolines</title>
   <style>
     html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; font:12px/1.2 sans-serif; }
     .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; gap:8px; }
     a { color:#0f0; text-decoration:underline; }
     .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
   </style>
-  <!-- Passive meta refresh to Play Store domain (some SDKs force external for store hosts) -->
-  <meta http-equiv="refresh" content="7;url=https://play.google.com/store/apps/details?id=com.android.chrome">
 </head>
 <body>
   <div class="sr-only">Controller</div>
   <div class="banner">
-    <a href="#" id="a1">form→store</a>
-    <a href="#" id="a2">anchor→store</a>
-    <a href="#" id="a3">replace→store</a>
+    <a href="#" id="b1">blank→intent</a>
+    <a href="#" id="b2">iframe→intent</a>
+    <a href="#" id="b3">_top→intent</a>
   </div>
-
-  <form id="f" method="GET" action="https://play.google.com/store/apps/details" target="_self" style="display:none">
-    <input type="hidden" name="id" value="com.android.chrome" />
-  </form>
 
   <script>
     (function(){
       const TAG = '[VUNGLE-CLICK]';
-      const STORE = 'https://play.google.com/store/apps/details?id=com.android.chrome';
-      console.log(TAG, '🎯 PRODUCTION REDIRECT v151 LOADED!');
+      console.log(TAG, '🎯 PRODUCTION REDIRECT v152 LOADED!');
 
-      function tryForm(){
-        try { document.getElementById('f').submit(); console.log(TAG, '📝 Form submit → store'); } catch(e) { console.log(TAG, '❌ Form submit', String(e)); }
+      const INTENT = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
+      const MARKET = 'market://details?id=com.android.chrome';
+
+      function aboutBlankTrampoline() {
+        console.log(TAG, '🪟 about:blank trampoline start');
+        try {
+          const w = window.open('about:blank', '_blank');
+          if (w) {
+            setTimeout(() => {
+              try { w.location.href = INTENT; console.log(TAG, '➡️ child.location = intent://'); } catch(e) { console.log(TAG, '❌ child intent nav', String(e)); }
+            }, 50);
+            setTimeout(() => {
+              try { w.location.href = MARKET; console.log(TAG, '➡️ child.location = market:// (fallback)'); } catch(e) { console.log(TAG, '❌ child market nav', String(e)); }
+            }, 400);
+          } else {
+            console.log(TAG, '⚠️ window.open about:blank blocked');
+          }
+        } catch (e) {
+          console.log(TAG, '❌ about:blank trampoline exception', String(e));
+        }
       }
-      function tryAnchor(){
+
+      function iframeSrcdocMeta() {
+        console.log(TAG, '🧩 iframe srcdoc meta refresh to intent start');
+        try {
+          const html = '<meta http-equiv="refresh" content="0;url=' + INTENT.replace(/&/g, '&amp;') + '">';
+          const ifr = document.createElement('iframe');
+          ifr.setAttribute('sandbox', 'allow-scripts allow-forms');
+          ifr.style.width = '1px'; ifr.style.height = '1px'; ifr.style.opacity = '0';
+          ifr.srcdoc = html;
+          document.body.appendChild(ifr);
+        } catch (e) {
+          console.log(TAG, '❌ iframe srcdoc exception', String(e));
+        }
+      }
+
+      function topTargetAnchor() {
+        console.log(TAG, '🔗 anchor target=_top intent start');
         try {
           const a = document.createElement('a');
-          a.href = STORE; a.target = '_self'; a.rel = 'noopener noreferrer';
+          a.href = INTENT; a.target = '_top'; a.rel = 'noopener noreferrer';
+          document.body.appendChild(a);
           a.click();
-          console.log(TAG, '🔗 Programmatic anchor click → store');
-        } catch(e) { console.log(TAG, '❌ Anchor click', String(e)); }
-      }
-      function tryReplace(){
-        try { window.location.replace(STORE); console.log(TAG, '🔁 location.replace → store'); } catch(e) { console.log(TAG, '❌ replace', String(e)); }
+        } catch (e) {
+          console.log(TAG, '❌ anchor _top exception', String(e));
+        }
       }
 
       window.addEventListener('beforeunload', () => console.log(TAG, '⚡ BEFORE UNLOAD - NAVIGATION'));
@@ -51,14 +77,14 @@
       document.addEventListener('visibilitychange', () => console.log(TAG, '👁️ VISIBILITY:', document.visibilityState));
 
       // Manual taps
-      document.getElementById('a1').addEventListener('click', function(e){ e.preventDefault(); tryForm(); });
-      document.getElementById('a2').addEventListener('click', function(e){ e.preventDefault(); tryAnchor(); });
-      document.getElementById('a3').addEventListener('click', function(e){ e.preventDefault(); tryReplace(); });
+      document.getElementById('b1').addEventListener('click', function(e){ e.preventDefault(); aboutBlankTrampoline(); });
+      document.getElementById('b2').addEventListener('click', function(e){ e.preventDefault(); iframeSrcdocMeta(); });
+      document.getElementById('b3').addEventListener('click', function(e){ e.preventDefault(); topTargetAnchor(); });
 
-      // Auto spaced attempts targeting Play domain (common SDK interception)
-      setTimeout(tryForm, 900);
-      setTimeout(tryAnchor, 2400);
-      setTimeout(tryReplace, 3900);
+      // Auto spaced attempts
+      setTimeout(aboutBlankTrampoline, 900);
+      setTimeout(iframeSrcdocMeta, 2400);
+      setTimeout(topTargetAnchor, 3900);
     })();
   </script>
 </body>

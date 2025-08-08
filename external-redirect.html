@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Production Redirect v161 - Crash-Resistant Strategy</title>
+  <title>Production Redirect v162 - URL-Based Persistence</title>
   <style>
     html, body { margin:0; padding:0; width:100%; height:100%; background:#000; color:#0f0; font:12px/1.2 sans-serif; }
     .banner { width:320px; height:50px; display:flex; align-items:center; justify-content:center; gap:8px; }
@@ -12,20 +12,20 @@
   </style>
 </head>
 <body>
-  <div class="sr-only">Controller v161</div>
+  <div class="sr-only">Controller v162</div>
   <div class="banner">
     <a href="#" data-mode="intent">intent</a>
     <a href="#" data-mode="market">market</a>
     <a href="#" data-mode="play">playhttps</a>
     <a href="#" data-mode="chrome">chrome</a>
     <a href="#" data-mode="geo">geo</a>
-    <a href="#" data-mode="persistent">persistent</a>
+    <a href="#" data-mode="urlpersist">urlpersist</a>
   </div>
 
   <script>
     (function(){
       const TAG = '[VUNGLE-CLICK]';
-      console.log(TAG, '🔄 PRODUCTION REDIRECT v161 LOADED!');
+      console.log(TAG, '🔗 PRODUCTION REDIRECT v162 LOADED!');
 
       const INTENT = 'intent://www.google.com#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=https://www.google.com;end';
       const MARKET = 'market://details?id=com.android.chrome';
@@ -33,43 +33,24 @@
       const CHROME_NAV = 'googlechrome://navigate?url=' + encodeURIComponent('https://www.google.com');
       const GEO = 'geo:37.4220,-122.0841?q=Googleplex';
 
-      // More robust parameter parsing
+      // URL-based parameter parsing
       const urlStr = location.href;
       const modeMatch = urlStr.match(/[?&]mode=([^&]*)/);
       const mode = modeMatch ? modeMatch[1].toLowerCase() : 'intent';
+      
+      // Extract strategy from URL (for persistence)
+      const strategyMatch = urlStr.match(/[?&]strategy=([^&]*)/);
+      const urlStrategy = strategyMatch ? parseInt(strategyMatch[1]) : 1;
+      
+      // Extract attempt count from URL  
+      const attemptMatch = urlStr.match(/[?&]attempt=([^&]*)/);
+      const urlAttempt = attemptMatch ? parseInt(attemptMatch[1]) : 1;
+      
       let attempted = false;
       console.log(TAG, '🔍 FULL URL:', urlStr);
       console.log(TAG, '🔍 MODE EXTRACTED:', mode);
-
-      // Crash-resistant state management
-      const STATE_KEY = 'vungle_redirect_state';
-      let state = { attempts: 0, lastAttempt: 0, strategy: 1 };
-      
-      try {
-        const saved = localStorage.getItem(STATE_KEY);
-        if (saved) {
-          state = JSON.parse(saved);
-          console.log(TAG, '📁 RESTORED STATE:', state);
-        }
-      } catch(e) {
-        console.log(TAG, '⚠️ localStorage unavailable');
-      }
-
-      function saveState() {
-        try {
-          localStorage.setItem(STATE_KEY, JSON.stringify(state));
-          console.log(TAG, '💾 STATE SAVED:', state);
-        } catch(e) {
-          console.log(TAG, '⚠️ Could not save state');
-        }
-      }
-
-      function clearState() {
-        try {
-          localStorage.removeItem(STATE_KEY);
-          console.log(TAG, '🗑️ STATE CLEARED');
-        } catch(e) {}
-      }
+      console.log(TAG, '🔍 STRATEGY FROM URL:', urlStrategy);
+      console.log(TAG, '🔍 ATTEMPT FROM URL:', urlAttempt);
 
       function nav(url, label, useReplace) {
         if (attempted) return;
@@ -77,6 +58,11 @@
         console.log(TAG, '🚀 Attempt (single) →', label, url);
         try { useReplace ? window.location.replace(url) : window.location.href = url; }
         catch(e){ console.log(TAG, '❌ Exception', label, String(e)); }
+      }
+
+      function buildPersistentUrl(strategy, attempt) {
+        const baseUrl = 'https://oprelloads.github.io/test-red/external-redirect.html';
+        return `${baseUrl}?mode=urlpersist&strategy=${strategy}&attempt=${attempt}`;
       }
 
       function runSelected() {
@@ -87,57 +73,64 @@
           case 'play': return nav(PLAY, 'playhttps', true);
           case 'chrome': return nav(CHROME_NAV, 'chrome navigate', false);
           case 'geo': return nav(GEO, 'geo', false);
-          case 'persistent': 
-            console.log(TAG, '🔄 PERSISTENT MODE MATCHED!');
-            return runPersistentStrategy();
+          case 'urlpersist': 
+            console.log(TAG, '🔗 URL PERSIST MODE MATCHED!');
+            return runUrlPersistentStrategy();
           default: 
             console.log(TAG, '❌ NO MATCH - using default intent');
             return nav(INTENT, 'intent (default)', false);
         }
       }
 
-      function runPersistentStrategy() {
+      function runUrlPersistentStrategy() {
         if (attempted) return;
         attempted = true;
         
-        const now = Date.now();
-        console.log(TAG, '🔄 Persistent Strategy - Crash Recovery');
-        console.log(TAG, '📊 Current state:', state);
+        console.log(TAG, '🔗 URL Persistent Strategy - Crash Recovery');
+        console.log(TAG, '📊 Current strategy:', urlStrategy, 'attempt:', urlAttempt);
         
-        // If we just attempted something, try the next strategy
-        if (state.lastAttempt > 0 && (now - state.lastAttempt) < 10000) {
-          state.strategy++;
-          console.log(TAG, '⏭️ Moving to strategy', state.strategy, '(recent attempt detected)');
+        const nextAttempt = urlAttempt + 1;
+        let nextStrategy = urlStrategy;
+        
+        // If this is attempt 2+ with same strategy, advance to next strategy
+        if (urlAttempt > 1) {
+          nextStrategy = urlStrategy + 1;
+          console.log(TAG, '⏭️ Advancing to strategy', nextStrategy, '(multiple attempts detected)');
         }
         
-        state.attempts++;
-        state.lastAttempt = now;
-        saveState();
-        
-        switch (state.strategy) {
+        switch (urlStrategy) {
           case 1:
-            console.log(TAG, '🚀 Persistent Strategy 1: Market scheme');
-            try { window.location.href = MARKET; } catch(e) { console.log(TAG, '❌ Market failed:', e); }
+            console.log(TAG, '🚀 URL Strategy 1: Market scheme (will redirect to strategy 2 after crash)');
+            // Set up next strategy URL for after crash
+            setTimeout(() => {
+              const nextUrl = buildPersistentUrl(2, 1);
+              console.log(TAG, '🔄 Pre-setting strategy 2 URL:', nextUrl);
+              try { window.location.href = nextUrl; } catch(e) { console.log(TAG, '❌ Pre-redirect failed:', e); }
+            }, 100);
+            // Then trigger market scheme (which will likely crash)
+            setTimeout(() => {
+              console.log(TAG, '🚀 Triggering market scheme...');
+              try { window.location.href = MARKET; } catch(e) { console.log(TAG, '❌ Market failed:', e); }
+            }, 200);
             break;
             
           case 2:
-            console.log(TAG, '🚀 Persistent Strategy 2: HTTPS Play Store');
+            console.log(TAG, '🚀 URL Strategy 2: HTTPS Play Store');
             try { window.location.href = PLAY; } catch(e) { console.log(TAG, '❌ HTTPS failed:', e); }
             break;
             
           case 3:
-            console.log(TAG, '🚀 Persistent Strategy 3: Google redirect');
+            console.log(TAG, '🚀 URL Strategy 3: Google redirect');
             try { window.location.href = 'https://www.google.com/url?q=' + encodeURIComponent(PLAY); } catch(e) { console.log(TAG, '❌ Google redirect failed:', e); }
             break;
             
           case 4:
-            console.log(TAG, '🚀 Persistent Strategy 4: Direct Google');
+            console.log(TAG, '🚀 URL Strategy 4: Direct Google');
             try { window.location.href = 'https://www.google.com'; } catch(e) { console.log(TAG, '❌ Direct Google failed:', e); }
             break;
             
           default:
-            console.log(TAG, '🏁 All strategies exhausted - clearing state');
-            clearState();
+            console.log(TAG, '🏁 All URL strategies exhausted');
             nav('https://www.google.com', 'final fallback', false);
         }
       }
@@ -158,13 +151,13 @@
           case 'play': return nav(PLAY, 'playhttps (manual)', true);
           case 'chrome': return nav(CHROME_NAV, 'chrome navigate (manual)');
           case 'geo': return nav(GEO, 'geo (manual)');
-          case 'persistent': return runPersistentStrategy();
+          case 'urlpersist': return runUrlPersistentStrategy();
         }
       }
 
       // Auto-run exactly one variant after a brief delay (to allow logs to flush)
       setTimeout(runSelected, 900);
-      console.log(TAG, '🧭 mode =', mode, '(pass ?mode=intent|market|play|chrome|geo|persistent)');
+      console.log(TAG, '🧭 mode =', mode, '(pass ?mode=intent|market|play|chrome|geo|urlpersist)');
     })();
   </script>
 </body>
